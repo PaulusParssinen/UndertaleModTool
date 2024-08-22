@@ -274,7 +274,7 @@ public static partial class Decompiler
                     {
                         val = tryVal ?? -1;
                         if (assetList != null && val >= 0 && val < assetList.Count)
-                            return ((UndertaleNamedResource)assetList[val]).Name.Content;
+                            return ((IUndertaleNamedResource)assetList[val]).Name.Content;
                     }
                 }
             }

@@ -9,27 +9,26 @@ using System.Windows;
 using System.Windows.Data;
 using UndertaleModLib;
 
-namespace UndertaleModTool
+namespace UndertaleModTool;
+
+public class DataFieldOneTimeConverter : IValueConverter
 {
-    public class DataFieldOneTimeConverter : IValueConverter
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is not UndertaleData data || parameter is not string par)
-                return null;
+        if (value is not UndertaleData data || parameter is not string par)
+            return null;
 
-            FieldInfo info = data.GetType().GetField(par);
-            object resObj = info?.GetValue(data);
+        FieldInfo info = data.GetType().GetField(par);
+        object resObj = info?.GetValue(data);
 
-            if (resObj is bool res)
-                return res ? Visibility.Visible : Visibility.Collapsed;
-            else
-                return null;
-        }
+        if (resObj is bool res)
+            return res ? Visibility.Visible : Visibility.Collapsed;
+        else
+            return null;
+    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

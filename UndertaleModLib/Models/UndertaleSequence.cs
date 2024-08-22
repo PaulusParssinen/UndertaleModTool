@@ -5,7 +5,7 @@ using System.IO;
 namespace UndertaleModLib.Models;
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleSequence : UndertaleNamedResource, IDisposable
+public class UndertaleSequence : IUndertaleNamedResource, IDisposable
 {
     public enum PlaybackType : uint
     {
@@ -80,7 +80,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
         Moments = reader.ReadUndertaleObject<UndertaleSimpleList<Keyframe<Moment>>>();
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;
@@ -117,7 +117,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
         FunctionIDs = null;
     }
 
-    public class Keyframe<T> : UndertaleObject where T : UndertaleObject, new()
+    public class Keyframe<T> : IUndertaleObject where T : IUndertaleObject, new()
     {
         public float Key { get; set; }
         public float Length { get; set; }
@@ -158,7 +158,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             }
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             uint count = 0;
@@ -191,7 +191,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
         }
     }
 
-    public class BroadcastMessage : UndertaleObject
+    public class BroadcastMessage : IUndertaleObject
     {
         public UndertaleSimpleListString Messages;
 
@@ -208,14 +208,14 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             Messages.Unserialize(reader);
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             return UndertaleSimpleListString.UnserializeChildObjectCount(reader);
         }
     }
 
-    public class Moment : UndertaleObject
+    public class Moment : IUndertaleObject
     {
         public int InternalCount; // Should be 0 if none, 1 if there's a message?
         public UndertaleString Event;
@@ -236,7 +236,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
                 Event = reader.ReadUndertaleString();
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             int internalCount = reader.ReadInt32();
@@ -247,7 +247,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
         }
     }
 
-    public class Track : UndertaleObject
+    public class Track : IUndertaleObject
     {
         public enum TrackBuiltinName
         {
@@ -287,7 +287,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
         public List<int> Tags { get; set; }
         public List<Track> Tracks { get; set; } // Sub-tracks
         public ITrackKeyframes Keyframes { get; set; }
-        public List<UndertaleResource> OwnedResources { get; set; }
+        public List<IUndertaleResource> OwnedResources { get; set; }
 
         public UndertaleString GMAnimCurveString;
 
@@ -307,7 +307,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             foreach (int i in Tags)
                 writer.Write(i);
 
-            foreach (UndertaleResource res in OwnedResources)
+            foreach (IUndertaleResource res in OwnedResources)
             {
                 if (res is UndertaleAnimationCurve)
                 {
@@ -398,7 +398,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             for (int i = 0; i < tagCount; i++)
                 Tags.Add(reader.ReadInt32());
 
-            OwnedResources = new List<UndertaleResource>(ownedResCount);
+            OwnedResources = new List<IUndertaleResource>(ownedResCount);
             for (int i = 0; i < ownedResCount; i++)
             {
                 GMAnimCurveString = ForceReadString();
@@ -460,7 +460,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             }
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             uint count = 0;
@@ -561,10 +561,10 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
 
     /// Here begins all of the keyframe data classes. Some generics used to shorten sections, but some verbosity maintained
 
-    public interface ITrackKeyframes : UndertaleObject
+    public interface ITrackKeyframes : IUndertaleObject
     {
     }
-    public class TrackKeyframes<T> : ITrackKeyframes where T : UndertaleObject, new()
+    public class TrackKeyframes<T> : ITrackKeyframes where T : IUndertaleObject, new()
     {
         public UndertaleSimpleList<Keyframe<T>> List;
 
@@ -588,7 +588,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             List.Unserialize(reader);
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             while (reader.AbsPosition % 4 != 0)
@@ -598,7 +598,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
         }
     }
 
-    public class ResourceData<T> : UndertaleObject where T : UndertaleObject, new()
+    public class ResourceData<T> : IUndertaleObject where T : IUndertaleObject, new()
     {
         public T Resource { get; set; }
 
@@ -615,7 +615,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             Resource.Unserialize(reader);
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             // At this moment, T could be only "UndertaleResourceById<>".
@@ -627,7 +627,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
         }
     }
 
-    public class SimpleIntData : IStaticChildObjectsSize, UndertaleObject
+    public class SimpleIntData : IStaticChildObjectsSize, IUndertaleObject
     {
         /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
         public static readonly uint ChildObjectsSize = 4;
@@ -670,7 +670,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
                 Mode = reader.ReadInt32();
             }
 
-            /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+            /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
             public new static uint UnserializeChildObjectCount(UndertaleReader reader)
             {
                 uint count = ResourceData<UndertaleResourceById<UndertaleSound, UndertaleChunkSOND>>.UnserializeChildObjectCount(reader);
@@ -709,7 +709,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
 
     public class StringKeyframes : TrackKeyframes<StringKeyframes.Data>
     {
-        public class Data : UndertaleObject, IStaticChildObjectsSize
+        public class Data : IUndertaleObject, IStaticChildObjectsSize
         {
             /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
             public static readonly uint ChildObjectsSize = 4;
@@ -730,7 +730,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
         }
     }
 
-    public class CurveData : UndertaleObject
+    public class CurveData : IUndertaleObject
     {
         public bool IsCurveEmbedded { get; set; }
         public UndertaleAnimationCurve EmbeddedAnimCurve { get; set; }
@@ -772,7 +772,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             }
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             uint count = 0;
@@ -809,7 +809,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             base.Unserialize(reader);
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public new static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             reader.Position += 4; // "Value"
@@ -846,7 +846,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             List.Unserialize(reader);
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public new static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             while (reader.AbsPosition % 4 != 0)
@@ -876,7 +876,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             base.Unserialize(reader);
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public new static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             reader.Position += 4; // "Value"
@@ -913,7 +913,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
             List.Unserialize(reader);
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public new static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             while (reader.AbsPosition % 4 != 0)
@@ -929,7 +929,7 @@ public class UndertaleSequence : UndertaleNamedResource, IDisposable
     {
         // Source - https://github.com/YoYoGames/GameMaker-HTML5/blob/develop/scripts/yySequence.js#L2227
         // ("yyTextTrackKey")
-        public class Data : UndertaleObject, IStaticChildObjectsSize
+        public class Data : IUndertaleObject, IStaticChildObjectsSize
         {
             /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
             public static readonly uint ChildObjectsSize = 16;

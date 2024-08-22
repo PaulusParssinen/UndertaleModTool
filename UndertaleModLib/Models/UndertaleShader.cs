@@ -6,13 +6,13 @@ namespace UndertaleModLib.Models;
 /// A shader entry for a data file.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleShader : UndertaleNamedResource, IDisposable
+public class UndertaleShader : IUndertaleNamedResource, IDisposable
 {
     /// <summary>
     /// The vertex shader attributes a shader can have.
     /// </summary>
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class VertexShaderAttribute : UndertaleObject, IStaticChildObjectsSize, IDisposable
+    public class VertexShaderAttribute : IUndertaleObject, IStaticChildObjectsSize, IDisposable
     {
         /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
         public static readonly uint ChildObjectsSize = 4;
@@ -449,7 +449,7 @@ public class UndertaleShader : UndertaleNamedResource, IDisposable
         }
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         reader.Position += 40;

@@ -2,50 +2,49 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace UndertaleModTool
+namespace UndertaleModTool;
+
+public class NegateNumberConverter : IValueConverter
 {
-    public class NegateNumberConverter : IValueConverter
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        double num;
+        try
         {
-            double num;
+            num = -1 * System.Convert.ToDouble(value);
+        }
+        catch
+        {
+            return null;
+        }
+
+        if (parameter is string par)
+        {
+            object res = null;
+
             try
             {
-                num = -1 * System.Convert.ToDouble(value);
-            }
-            catch
-            {
-                return null;
-            }
-
-            if (parameter is string par)
-            {
-                object res = null;
-
-                try
+                res = par switch
                 {
-                    res = par switch
-                    {
-                        "sbyte" => (sbyte)num,
-                        "short" => (short)num,
-                        "int" => (int)num,
-                        "long" => (long)num,
-                        "float" => (float)num,
-                        "decimal" => (decimal)num,
-                        _ => null
-                    };
-                }
-                catch { }
-
-                return res; 
+                    "sbyte" => (sbyte)num,
+                    "short" => (short)num,
+                    "int" => (int)num,
+                    "long" => (long)num,
+                    "float" => (float)num,
+                    "decimal" => (decimal)num,
+                    _ => null
+                };
             }
-            else
-                return num;
-        }
+            catch { }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
+            return res; 
         }
+        else
+            return num;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -8,12 +8,12 @@ namespace UndertaleModLib.Models;
 /// A tag entry in a GameMaker data file. Tags are a GameMaker: Studio 2.3+ feature.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleTags : UndertaleObject, IDisposable
+public class UndertaleTags : IUndertaleObject, IDisposable
 {
     public UndertaleSimpleListString Tags { get; set; }
     public Dictionary<int, UndertaleSimpleListString> AssetTags { get; set; }
 
-    public static int GetAssetTagID(UndertaleData data, UndertaleNamedResource resource)
+    public static int GetAssetTagID(UndertaleData data, IUndertaleNamedResource resource)
     {
         ResourceType type = resource switch
         {
@@ -61,7 +61,7 @@ public class UndertaleTags : UndertaleObject, IDisposable
             AssetTags[t.ID] = t.Tags;
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;
@@ -81,7 +81,7 @@ public class UndertaleTags : UndertaleObject, IDisposable
         Tags = null;
     }
 
-    private class TempAssetTags : UndertaleObject, IDisposable
+    private class TempAssetTags : IUndertaleObject, IDisposable
     {
         public int ID { get; set; }
         public UndertaleSimpleListString Tags { get; set; }
@@ -100,7 +100,7 @@ public class UndertaleTags : UndertaleObject, IDisposable
             Tags = reader.ReadUndertaleObject<UndertaleSimpleListString>();
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             reader.Position += 4;

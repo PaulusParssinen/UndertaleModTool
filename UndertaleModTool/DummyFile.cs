@@ -16,22 +16,21 @@ using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using System.IO.Pipes;
 
-namespace UndertaleModTool
-{
-    // Test code here
-    public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterface
-    {
-        public bool DummyBool()
-        {
-            return true;
-        }
+namespace UndertaleModTool;
 
-        public void DummyVoid()
-        {
-        }
-        public string DummyString()
-        {
-            return "";
-        }
+// Test code here
+public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterface
+{
+    public bool DummyBool()
+    {
+        return true;
+    }
+
+    public void DummyVoid()
+    {
+    }
+    public string DummyString()
+    {
+        return "";
     }
 }

@@ -6,7 +6,7 @@ namespace UndertaleModLib.Models;
 /// List of feature flag entries in a GameMaker data file, version 2022.8 and above.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleFeatureFlags : UndertaleObject, IDisposable
+public class UndertaleFeatureFlags : IUndertaleObject, IDisposable
 {
     /// <summary>
     /// The list of feature flags.
@@ -27,7 +27,7 @@ public class UndertaleFeatureFlags : UndertaleObject, IDisposable
         List.Unserialize(reader);
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         return UndertaleSimpleListString.UnserializeChildObjectCount(reader);

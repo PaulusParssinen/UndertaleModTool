@@ -10,46 +10,45 @@ using System.Windows;
 using System.Windows.Data;
 using UndertaleModLib;
 
-namespace UndertaleModTool
+namespace UndertaleModTool;
+
+[ValueConversion(typeof(object), typeof(ICollectionView))]
+public class FilteredViewConverter : DependencyObject, IValueConverter
 {
-    [ValueConversion(typeof(object), typeof(ICollectionView))]
-    public class FilteredViewConverter : DependencyObject, IValueConverter
+    public static DependencyProperty FilterProperty =
+        DependencyProperty.Register("Filter", typeof(string),
+            typeof(FilteredViewConverter),
+            new FrameworkPropertyMetadata(null));
+
+    public string Filter
     {
-        public static DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(string),
-                typeof(FilteredViewConverter),
-                new FrameworkPropertyMetadata(null));
+        get { return (string)GetValue(FilterProperty); }
+        set { SetValue(FilterProperty, value); }
+    }
 
-        public string Filter
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value == null)
+            return null;
+        ICollectionView filteredView = CollectionViewSource.GetDefaultView(value);
+        filteredView.Filter = (obj) =>
         {
-            get { return (string)GetValue(FilterProperty); }
-            set { SetValue(FilterProperty, value); }
-        }
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value == null)
-                return null;
-            ICollectionView filteredView = CollectionViewSource.GetDefaultView(value);
-            filteredView.Filter = (obj) =>
-            {
-                if (String.IsNullOrEmpty(Filter))
-                    return true;
-                if (obj is ISearchable)
-                    return (obj as ISearchable)?.SearchMatches(Filter) ?? false;
-                if (obj is UndertaleNamedResource)
-                    return ((obj as UndertaleNamedResource)?.Name?.Content?.IndexOf(Filter, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0;
-                if (obj is object[] links)
-                    return links.Select(x => x is UndertaleNamedResource res ? res.Name?.Content : x.ToString())
-                                .Any(x => (x?.IndexOf(Filter, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0);
+            if (String.IsNullOrEmpty(Filter))
                 return true;
-            };
-            return filteredView;
-        }
+            if (obj is ISearchable)
+                return (obj as ISearchable)?.SearchMatches(Filter) ?? false;
+            if (obj is IUndertaleNamedResource)
+                return ((obj as IUndertaleNamedResource)?.Name?.Content?.IndexOf(Filter, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0;
+            if (obj is object[] links)
+                return links.Select(x => x is IUndertaleNamedResource res ? res.Name?.Content : x.ToString())
+                            .Any(x => (x?.IndexOf(Filter, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0);
+            return true;
+        };
+        return filteredView;
+    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

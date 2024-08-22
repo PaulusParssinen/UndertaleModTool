@@ -7,7 +7,7 @@ namespace UndertaleModLib.Models;
 /// An embedded audio entry in a data file.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleEmbeddedAudio : UndertaleNamedResource, PaddedObject, IDisposable
+public class UndertaleEmbeddedAudio : IUndertaleNamedResource, IPaddedObject, IDisposable
 {
     /// <summary>
     /// The name of the embedded audio entry.

@@ -6,7 +6,7 @@ namespace UndertaleModLib.Models;
 /// A Path entry in a GameMaker data file.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertalePath : UndertaleNamedResource, IDisposable
+public class UndertalePath : IUndertaleNamedResource, IDisposable
 {
     /// <summary>
     /// The name of <see cref="UndertalePath"/>.
@@ -39,7 +39,7 @@ public class UndertalePath : UndertaleNamedResource, IDisposable
     /// A point in a <see cref="UndertalePath"/>.
     /// </summary>
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class PathPoint : UndertaleObject, IStaticChildObjectsSize
+    public class PathPoint : IUndertaleObject, IStaticChildObjectsSize
     {
         /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
         public static readonly uint ChildObjectsSize = 12;
@@ -96,7 +96,7 @@ public class UndertalePath : UndertaleNamedResource, IDisposable
         Points = reader.ReadUndertaleObject<UndertaleSimpleList<PathPoint>>();
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         reader.Position += 16;

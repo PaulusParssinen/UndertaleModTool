@@ -7,13 +7,13 @@ namespace UndertaleModLib.Models;
 /// A timeline in a data file.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleTimeline : UndertaleNamedResource, IDisposable
+public class UndertaleTimeline : IUndertaleNamedResource, IDisposable
 {
     /// <summary>
     /// A specific moment in a timeline.
     /// </summary>
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class UndertaleTimelineMoment : UndertaleObject, IDisposable
+    public class UndertaleTimelineMoment : IUndertaleObject, IDisposable
     {
         /// <summary>
         /// After how many steps this moment gets executed.
@@ -145,7 +145,7 @@ public class UndertaleTimeline : UndertaleNamedResource, IDisposable
         }
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;

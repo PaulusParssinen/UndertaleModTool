@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 namespace UndertaleModLib.Models;
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleParticleSystem : UndertaleNamedResource, IDisposable
+public class UndertaleParticleSystem : IUndertaleNamedResource, IDisposable
 {
     // TODO: Documentation on these values.
     public UndertaleString Name { get; set; }
@@ -44,7 +44,7 @@ public class UndertaleParticleSystem : UndertaleNamedResource, IDisposable
         Emitters = reader.ReadUndertaleObject<UndertaleSimpleResourcesList<UndertaleParticleSystemEmitter, UndertaleChunkPSEM>>();
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         reader.Position += 16;
@@ -72,7 +72,7 @@ public class UndertaleParticleSystem : UndertaleNamedResource, IDisposable
 }
 
 
-public class UndertaleParticleSystemEmitter : UndertaleNamedResource, INotifyPropertyChanged, IDisposable,
+public class UndertaleParticleSystemEmitter : IUndertaleNamedResource, INotifyPropertyChanged, IDisposable,
                                               IStaticChildObjectsSize
 {
     /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />

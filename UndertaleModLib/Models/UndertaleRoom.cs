@@ -13,7 +13,7 @@ namespace UndertaleModLib.Models;
 /// <summary>
 /// A room in a data file.
 /// </summary>
-public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDisposable
+public class UndertaleRoom : IUndertaleNamedResource, INotifyPropertyChanged, IDisposable
 {
     /// <summary>
     /// Certain flags a room can have.
@@ -421,7 +421,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
         }
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;
@@ -602,7 +602,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
     /// <summary>
     /// A background with properties as it's used in a room.
     /// </summary>
-    public class Background : UndertaleObject, INotifyPropertyChanged, IDisposable,
+    public class Background : IUndertaleObject, INotifyPropertyChanged, IDisposable,
                               IStaticChildObjCount, IStaticChildObjectsSize
     {
         /// <inheritdoc cref="IStaticChildObjCount.ChildObjectCount" />
@@ -778,7 +778,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
     /// <summary>
     /// A view with properties as it's used in a room.
     /// </summary>
-    public class View : UndertaleObject, INotifyPropertyChanged, IDisposable,
+    public class View : IUndertaleObject, INotifyPropertyChanged, IDisposable,
                         IStaticChildObjCount, IStaticChildObjectsSize
     {
         /// <inheritdoc cref="IStaticChildObjCount.ChildObjectCount" />
@@ -912,7 +912,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
     /// <summary>
     /// A game object with properties as it's used in a room.
     /// </summary>
-    public class GameObject : UndertaleObject, IRoomObject, INotifyPropertyChanged, IDisposable,
+    public class GameObject : IUndertaleObject, IRoomObject, INotifyPropertyChanged, IDisposable,
                               IStaticChildObjCount, IStaticChildObjectsSize
     {
         /// <inheritdoc cref="IStaticChildObjCount.ChildObjectCount" />
@@ -1118,7 +1118,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
     /// <summary>
     /// A tile with properties as it's used in a room.
     /// </summary>
-    public class Tile : UndertaleObject, IRoomObject, INotifyPropertyChanged, IDisposable,
+    public class Tile : IUndertaleObject, IRoomObject, INotifyPropertyChanged, IDisposable,
                         IStaticChildObjCount, IStaticChildObjectsSize
     {
         /// <inheritdoc cref="IStaticChildObjCount.ChildObjectCount" />
@@ -1183,7 +1183,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
         /// Will return a <see cref="UndertaleBackground"/> if <see cref="spriteMode"/> is <see langword="true"/>,
         /// a <see cref="UndertaleSprite"/> if it's <see langword="false"/>.
         /// </summary>
-        public UndertaleNamedResource ObjectDefinition
+        public IUndertaleNamedResource ObjectDefinition
         {
             get => spriteMode ? SpriteDefinition : BackgroundDefinition;
             set
@@ -1350,9 +1350,9 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
     /// A layer with properties as it's used in a room. Game Maker: Studio 2 only.
     /// </summary>
     //TODO: everything from here on is mostly gms2 related which i dont have much experience with
-    public class Layer : UndertaleObject, INotifyPropertyChanged, IDisposable
+    public class Layer : IUndertaleObject, INotifyPropertyChanged, IDisposable
     {
-        public interface LayerData : UndertaleObject, IDisposable
+        public interface LayerData : IUndertaleObject, IDisposable
         {
         }
 
@@ -1484,7 +1484,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
             };
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             uint count = 0;
@@ -1559,7 +1559,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
                 // UndertaleRoom.Unserialize resolves these IDs to objects later
             }
 
-            /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+            /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
             public static uint UnserializeChildObjectCount(UndertaleReader reader)
             {
                 uint instanceCount = reader.ReadUInt32();
@@ -1674,7 +1674,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
                 }
             }
 
-            /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+            /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
             public static uint UnserializeChildObjectCount(UndertaleReader reader)
             {
                 uint count = 0;
@@ -1995,7 +1995,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
                 AnimationSpeedType = (AnimationSpeedType)reader.ReadUInt32();
             }
 
-            /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+            /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
             public static uint UnserializeChildObjectCount(UndertaleReader reader)
             {
                 reader.Position += ChildObjectsSize;
@@ -2087,7 +2087,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
                 }
             }
 
-            /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+            /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
             public static uint UnserializeChildObjectCount(UndertaleReader reader)
             {
                 uint count = 0;
@@ -2196,7 +2196,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
                 Properties = reader.ReadUndertaleObject<UndertaleSimpleList<EffectProperty>>();
             }
 
-            /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+            /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
             public static uint UnserializeChildObjectCount(UndertaleReader reader)
             {
                 if (reader.undertaleData.IsVersionAtLeast(2022, 1))
@@ -2225,7 +2225,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
     }
 
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class EffectProperty : UndertaleObject, IStaticChildObjectsSize, IDisposable
+    public class EffectProperty : IUndertaleObject, IStaticChildObjectsSize, IDisposable
     {
         /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
         public static readonly uint ChildObjectsSize = 12;
@@ -2267,7 +2267,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
         }
     }
 
-    public class SpriteInstance : UndertaleObject, INotifyPropertyChanged, IStaticChildObjCount, IStaticChildObjectsSize, IDisposable
+    public class SpriteInstance : IUndertaleObject, INotifyPropertyChanged, IStaticChildObjCount, IStaticChildObjectsSize, IDisposable
     {
         /// <inheritdoc cref="IStaticChildObjCount.ChildObjectCount" />
         public static readonly uint ChildObjectCount = 1;
@@ -2414,7 +2414,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
         }
     }
 
-    public class SequenceInstance : UndertaleObject, INotifyPropertyChanged, IStaticChildObjCount, IStaticChildObjectsSize, IDisposable
+    public class SequenceInstance : IUndertaleObject, INotifyPropertyChanged, IStaticChildObjCount, IStaticChildObjectsSize, IDisposable
     {
         /// <inheritdoc cref="IStaticChildObjCount.ChildObjectCount" />
         public static readonly uint ChildObjectCount = 1;
@@ -2486,7 +2486,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
         }
     }
 
-    public class ParticleSystemInstance : UndertaleObject, INotifyPropertyChanged, IStaticChildObjCount, IStaticChildObjectsSize, IDisposable
+    public class ParticleSystemInstance : IUndertaleObject, INotifyPropertyChanged, IStaticChildObjCount, IStaticChildObjectsSize, IDisposable
     {
         /// <inheritdoc cref="IStaticChildObjCount.ChildObjectCount" />
         public static readonly uint ChildObjectCount = 1;
@@ -2577,7 +2577,7 @@ public class UndertaleRoom : UndertaleNamedResource, INotifyPropertyChanged, IDi
         }
     }
 
-    public class TextItemInstance : UndertaleObject, INotifyPropertyChanged, IStaticChildObjCount, IStaticChildObjectsSize, IDisposable
+    public class TextItemInstance : IUndertaleObject, INotifyPropertyChanged, IStaticChildObjCount, IStaticChildObjectsSize, IDisposable
     {
         /// <inheritdoc cref="IStaticChildObjCount.ChildObjectCount" />
         public static readonly uint ChildObjectCount = 1;

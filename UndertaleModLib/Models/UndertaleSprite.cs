@@ -15,7 +15,7 @@ public enum AnimSpeedType : uint
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleSpineTextureEntry : UndertaleObject, IDisposable
+public class UndertaleSpineTextureEntry : IUndertaleObject, IDisposable
 {
     /// <summary>
     /// The width of the Spine atlas in pixels.
@@ -69,7 +69,7 @@ public class UndertaleSpineTextureEntry : UndertaleObject, IDisposable
             TexBlob = reader.ReadBytes(reader.ReadInt32());
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         reader.Position += 8;                        // Size
@@ -99,7 +99,7 @@ public class UndertaleSpineTextureEntry : UndertaleObject, IDisposable
 /// <summary>
 /// Sprite entry in the data file.
 /// </summary>
-public class UndertaleSprite : UndertaleNamedResource, PrePaddedObject, INotifyPropertyChanged, IDisposable
+public class UndertaleSprite : IUndertaleNamedResource, IPrePaddedObject, INotifyPropertyChanged, IDisposable
 {
     /// <summary>
     /// The name of the sprite.
@@ -315,7 +315,7 @@ public class UndertaleSprite : UndertaleNamedResource, PrePaddedObject, INotifyP
     }
 
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class TextureEntry : UndertaleObject, IStaticChildObjectsSize, IDisposable
+    public class TextureEntry : IUndertaleObject, IStaticChildObjectsSize, IDisposable
     {
         /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
         public static readonly uint ChildObjectsSize = 4;
@@ -689,7 +689,7 @@ public class UndertaleSprite : UndertaleNamedResource, PrePaddedObject, INotifyP
         }
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         reader.Align(4);
@@ -926,7 +926,7 @@ public class UndertaleSprite : UndertaleNamedResource, PrePaddedObject, INotifyP
     }
 
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class NineSlice : UndertaleObject, IStaticChildObjectsSize
+    public class NineSlice : IUndertaleObject, IStaticChildObjectsSize
     {
         /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
         public static readonly uint ChildObjectsSize = 40;
@@ -980,12 +980,12 @@ public class UndertaleSprite : UndertaleNamedResource, PrePaddedObject, INotifyP
 public static class UndertaleYYSWFUtils
 {
     /// <summary>
-    /// Reads an <see cref="UndertaleObject"/> ignoring the <paramref name="reader"/>s object pool.
+    /// Reads an <see cref="IUndertaleObject"/> ignoring the <paramref name="reader"/>s object pool.
     /// </summary>
-    /// <typeparam name="T"><see cref="UndertaleObject"/>s child.</typeparam>
+    /// <typeparam name="T"><see cref="IUndertaleObject"/>s child.</typeparam>
     /// <param name="reader">An instance of <see cref="UndertaleReader"/>.</param>
     /// <returns>The object</returns>
-    public static T ReadUndertaleObjectNoPool<T>(this UndertaleReader reader) where T : UndertaleObject, new()
+    public static T ReadUndertaleObjectNoPool<T>(this UndertaleReader reader) where T : IUndertaleObject, new()
     {
         T o = new T();
         o.Unserialize(reader);
@@ -994,7 +994,7 @@ public static class UndertaleYYSWFUtils
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFMatrixColor : UndertaleObject
+public class UndertaleYYSWFMatrixColor : IUndertaleObject
 {
     private const int MATRIX_SIZE = 4;
 
@@ -1023,7 +1023,7 @@ public class UndertaleYYSWFMatrixColor : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFMatrix33 : UndertaleObject
+public class UndertaleYYSWFMatrix33 : IUndertaleObject
 {
     private const int MATRIX_SIZE = 9;
     public float[] Values { get; set; }
@@ -1045,7 +1045,7 @@ public class UndertaleYYSWFMatrix33 : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFTimelineObject : UndertaleObject
+public class UndertaleYYSWFTimelineObject : IUndertaleObject
 {
     public int CharID { get; set; }
     public int CharIndex { get; set; }
@@ -1090,7 +1090,7 @@ public class UndertaleYYSWFTimelineObject : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFTimelineFrame : UndertaleObject
+public class UndertaleYYSWFTimelineFrame : IUndertaleObject
 {
     public UndertaleSimpleList<UndertaleYYSWFTimelineObject> FrameObjects { get; set; }
     public float MinX { get; set; }
@@ -1130,7 +1130,7 @@ public class UndertaleYYSWFTimelineFrame : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFCollisionMask : UndertaleObject
+public class UndertaleYYSWFCollisionMask : IUndertaleObject
 {
     public byte[] RLEData { get; set; } // heavily compressed and pre-processed!
 
@@ -1201,7 +1201,7 @@ public enum UndertaleYYSWFGradientFillType
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFSolidFillData : UndertaleObject
+public class UndertaleYYSWFSolidFillData : IUndertaleObject
 {
     public byte Red { get; set; }
     public byte Green { get; set; }
@@ -1228,7 +1228,7 @@ public class UndertaleYYSWFSolidFillData : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFGradientRecord : UndertaleObject
+public class UndertaleYYSWFGradientRecord : IUndertaleObject
 {
     public int Ratio { get; set; }
     public byte Red { get; set; }
@@ -1258,7 +1258,7 @@ public class UndertaleYYSWFGradientRecord : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFGradientFillData : UndertaleObject
+public class UndertaleYYSWFGradientFillData : IUndertaleObject
 {
     public UndertaleYYSWFGradientFillType GradientFillType { get; set; }
     public UndertaleYYSWFMatrix33 TransformationMatrix { get; set; }
@@ -1300,7 +1300,7 @@ public class UndertaleYYSWFGradientFillData : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFBitmapFillData : UndertaleObject
+public class UndertaleYYSWFBitmapFillData : IUndertaleObject
 {
     public UndertaleYYSWFBitmapFillType BitmapFillType { get; set; }
     public int CharID { get; set; }
@@ -1324,7 +1324,7 @@ public class UndertaleYYSWFBitmapFillData : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFFillData : UndertaleObject
+public class UndertaleYYSWFFillData : IUndertaleObject
 {
     public UndertaleYYSWFFillType Type { get; set; }
     public UndertaleYYSWFBitmapFillData BitmapFillData { get; set; }
@@ -1398,7 +1398,7 @@ public class UndertaleYYSWFFillData : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFLineStyleData : UndertaleObject
+public class UndertaleYYSWFLineStyleData : IUndertaleObject
 {
     public byte Red { get; set; }
     public byte Green { get; set; }
@@ -1431,7 +1431,7 @@ public class UndertaleYYSWFLineStyleData : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFVector2 : UndertaleObject
+public class UndertaleYYSWFVector2 : IUndertaleObject
 {
     public int X { get; set; }
     public int Y { get; set; }
@@ -1458,7 +1458,7 @@ public class UndertaleYYSWFVector2 : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFVector2F : UndertaleObject
+public class UndertaleYYSWFVector2F : IUndertaleObject
 {
     public float X { get; set; }
     public float Y { get; set; }
@@ -1485,7 +1485,7 @@ public class UndertaleYYSWFVector2F : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFSubshapeData : UndertaleObject
+public class UndertaleYYSWFSubshapeData : IUndertaleObject
 {
     public int FillStyleOne { get; set; }
     public int FillStyleTwo { get; set; }
@@ -1640,7 +1640,7 @@ public class UndertaleYYSWFSubshapeData : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFShapeData : UndertaleObject
+public class UndertaleYYSWFShapeData : IUndertaleObject
 {
     public float MinX { get; set; }
     public float MaxX { get; set; }
@@ -1676,7 +1676,7 @@ public class UndertaleYYSWFShapeData : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFStyleGroup : UndertaleObject
+public class UndertaleYYSWFStyleGroup : IUndertaleObject
 {
     public UndertaleSimpleList<UndertaleYYSWFFillData> FillStyles { get; set; }
     public UndertaleSimpleList<UndertaleYYSWFLineStyleData> LineStyles { get; set; }
@@ -1748,7 +1748,7 @@ public enum UndertaleYYSWFBitmapType
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFBitmapData : UndertaleObject
+public class UndertaleYYSWFBitmapData : IUndertaleObject
 {
     public UndertaleYYSWFBitmapType Type { get; set; }
     public int Width { get; set; }
@@ -1823,7 +1823,7 @@ public class UndertaleYYSWFBitmapData : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFItem : UndertaleObject
+public class UndertaleYYSWFItem : IUndertaleObject
 {
     public int ID { get; set; }
     public UndertaleYYSWFItemType ItemType { get; set; }
@@ -1899,7 +1899,7 @@ public class UndertaleYYSWFItem : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWFTimeline : UndertaleObject
+public class UndertaleYYSWFTimeline : IUndertaleObject
 {
     public int Framerate { get; set; }
     public float MinX { get; set; }
@@ -1975,7 +1975,7 @@ public class UndertaleYYSWFTimeline : UndertaleObject
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleYYSWF : UndertaleObject
+public class UndertaleYYSWF : IUndertaleObject
 {
     public byte[] JPEGTable { get; set; }
     public int Version { get; set; }

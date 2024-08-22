@@ -10,7 +10,7 @@ namespace UndertaleModLib.Models;
 /// A function entry as it's used in a GameMaker data file.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleFunction : UndertaleNamedResource, UndertaleInstruction.ReferencedObject, IStaticChildObjectsSize, IDisposable
+public class UndertaleFunction : IUndertaleNamedResource, UndertaleInstruction.ReferencedObject, IStaticChildObjectsSize, IDisposable
 {
     /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
     public static readonly uint ChildObjectsSize = 12;
@@ -102,7 +102,7 @@ public class UndertaleFunction : UndertaleNamedResource, UndertaleInstruction.Re
 // Seems to be unused. You can remove all entries and the game still works normally. TODO: not true, incorrect/missing locals can wreak some weird havoc like random segfaults.
 // Maybe the GM:S debugger uses this data?
 // TODO: INotifyPropertyChanged
-public class UndertaleCodeLocals : UndertaleNamedResource, IDisposable
+public class UndertaleCodeLocals : IUndertaleNamedResource, IDisposable
 {
     /// <summary>
     /// The name of the code local entry which corresponds to a code entry.
@@ -137,7 +137,7 @@ public class UndertaleCodeLocals : UndertaleNamedResource, IDisposable
         Util.DebugUtil.Assert(Locals.Count == count);
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = reader.ReadUInt32();
@@ -161,7 +161,7 @@ public class UndertaleCodeLocals : UndertaleNamedResource, IDisposable
     /// <summary>
     /// A local variable. TODO: a better description for this.
     /// </summary>
-    public class LocalVar : UndertaleObject, IStaticChildObjectsSize, IDisposable
+    public class LocalVar : IUndertaleObject, IStaticChildObjectsSize, IDisposable
     {
         /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
         public static readonly uint ChildObjectsSize = 8;

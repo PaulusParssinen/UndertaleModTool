@@ -10,12 +10,12 @@ namespace UndertaleModLib.Models;
 /// <remarks>For Game Maker Studio: 2, this will only ever be a tileset. For Game Maker Studio: 1, this is usually a background,
 /// but is sometimes repurposed as use for a tileset as well.</remarks>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleBackground : UndertaleNamedResource, IDisposable
+public class UndertaleBackground : IUndertaleNamedResource, IDisposable
 {
     /// <summary>
     /// A tile id, which can be used for referencing specific tiles in a tileset. Game Maker Studio 2 only.
     /// </summary>
-    public class TileID : UndertaleObject, INotifyPropertyChanged
+    public class TileID : IUndertaleObject, INotifyPropertyChanged
     {
         private uint _id;
 

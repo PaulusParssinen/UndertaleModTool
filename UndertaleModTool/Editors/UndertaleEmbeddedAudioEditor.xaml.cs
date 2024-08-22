@@ -18,123 +18,122 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UndertaleModLib.Models;
 
-namespace UndertaleModTool
+namespace UndertaleModTool;
+
+/// <summary>
+/// Logika interakcji dla klasy UndertaleEmbeddedAudioEditor.xaml
+/// </summary>
+public partial class UndertaleEmbeddedAudioEditor : DataUserControl
 {
-    /// <summary>
-    /// Logika interakcji dla klasy UndertaleEmbeddedAudioEditor.xaml
-    /// </summary>
-    public partial class UndertaleEmbeddedAudioEditor : DataUserControl
+    private WaveOutEvent waveOut;
+    private WaveFileReader wavReader;
+    private VorbisWaveReader oggReader;
+
+    private static readonly MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
+
+    public UndertaleEmbeddedAudioEditor()
     {
-        private WaveOutEvent waveOut;
-        private WaveFileReader wavReader;
-        private VorbisWaveReader oggReader;
+        InitializeComponent();
+        this.Unloaded += Unload;
+    }
 
-        private static readonly MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
+    public void Unload(object sender, RoutedEventArgs e)
+    {
+        if (waveOut != null)
+            waveOut.Stop();
+    }
 
-        public UndertaleEmbeddedAudioEditor()
+    private void Import_Click(object sender, RoutedEventArgs e)
+    {
+        UndertaleEmbeddedAudio target = DataContext as UndertaleEmbeddedAudio;
+
+        OpenFileDialog dlg = new OpenFileDialog();
+
+        dlg.DefaultExt = ".wav";
+        dlg.Filter = "WAV files (.wav)|*.wav|All files|*";
+
+        if (dlg.ShowDialog() == true)
         {
-            InitializeComponent();
-            this.Unloaded += Unload;
-        }
-
-        public void Unload(object sender, RoutedEventArgs e)
-        {
-            if (waveOut != null)
-                waveOut.Stop();
-        }
-
-        private void Import_Click(object sender, RoutedEventArgs e)
-        {
-            UndertaleEmbeddedAudio target = DataContext as UndertaleEmbeddedAudio;
-
-            OpenFileDialog dlg = new OpenFileDialog();
-
-            dlg.DefaultExt = ".wav";
-            dlg.Filter = "WAV files (.wav)|*.wav|All files|*";
-
-            if (dlg.ShowDialog() == true)
+            try
             {
-                try
-                {
-                    byte[] data = File.ReadAllBytes(dlg.FileName);
+                byte[] data = File.ReadAllBytes(dlg.FileName);
 
-                    // TODO: Make sure it's valid WAV
+                // TODO: Make sure it's valid WAV
 
-                    target.Data = data;
-                }
-                catch (Exception ex)
-                {
-                    mainWindow.ShowError("Failed to import file: " + ex.Message, "Failed to import file");
-                }
+                target.Data = data;
+            }
+            catch (Exception ex)
+            {
+                mainWindow.ShowError("Failed to import file: " + ex.Message, "Failed to import file");
             }
         }
+    }
 
-        private void Export_Click(object sender, RoutedEventArgs e)
+    private void Export_Click(object sender, RoutedEventArgs e)
+    {
+        UndertaleEmbeddedAudio target = DataContext as UndertaleEmbeddedAudio;
+
+        SaveFileDialog dlg = new SaveFileDialog();
+
+        dlg.DefaultExt = ".wav";
+        dlg.Filter = "WAV files (.wav)|*.wav|All files|*";
+
+        if (dlg.ShowDialog() == true)
         {
-            UndertaleEmbeddedAudio target = DataContext as UndertaleEmbeddedAudio;
-
-            SaveFileDialog dlg = new SaveFileDialog();
-
-            dlg.DefaultExt = ".wav";
-            dlg.Filter = "WAV files (.wav)|*.wav|All files|*";
-
-            if (dlg.ShowDialog() == true)
+            try
             {
-                try
-                {
-                    File.WriteAllBytes(dlg.FileName, target.Data);
-                }
-                catch (Exception ex)
-                {
-                    mainWindow.ShowError("Failed to export file: " + ex.Message, "Failed to export file");
-                }
+                File.WriteAllBytes(dlg.FileName, target.Data);
+            }
+            catch (Exception ex)
+            {
+                mainWindow.ShowError("Failed to export file: " + ex.Message, "Failed to export file");
             }
         }
+    }
 
-        private void InitAudio()
+    private void InitAudio()
+    {
+        if (waveOut == null)
+            waveOut = new WaveOutEvent() { DeviceNumber = 0 };
+        else if (waveOut.PlaybackState != PlaybackState.Stopped)
+            waveOut.Stop();
+    }
+
+    private void Play_Click(object sender, RoutedEventArgs e)
+    {
+        UndertaleEmbeddedAudio target = DataContext as UndertaleEmbeddedAudio;
+
+        if (target.Data.Length > 4)
         {
-            if (waveOut == null)
-                waveOut = new WaveOutEvent() { DeviceNumber = 0 };
-            else if (waveOut.PlaybackState != PlaybackState.Stopped)
-                waveOut.Stop();
-        }
-
-        private void Play_Click(object sender, RoutedEventArgs e)
-        {
-            UndertaleEmbeddedAudio target = DataContext as UndertaleEmbeddedAudio;
-
-            if (target.Data.Length > 4)
+            try
             {
-                try
+                if (target.Data[0] == 'R' && target.Data[1] == 'I' && target.Data[2] == 'F' && target.Data[3] == 'F')
                 {
-                    if (target.Data[0] == 'R' && target.Data[1] == 'I' && target.Data[2] == 'F' && target.Data[3] == 'F')
-                    {
-                        wavReader = new WaveFileReader(new MemoryStream(target.Data));
-                        InitAudio();
-                        waveOut.Init(wavReader);
-                        waveOut.Play();
-                    }
-                    else if (target.Data[0] == 'O' && target.Data[1] == 'g' && target.Data[2] == 'g' && target.Data[3] == 'S')
-                    {
-                        oggReader = new VorbisWaveReader(new MemoryStream(target.Data));
-                        InitAudio();
-                        waveOut.Init(oggReader);
-                        waveOut.Play();
-                    } else
-                        mainWindow.ShowError("Failed to play audio!\r\nNot a WAV or OGG.", "Audio failure");
-                } catch (Exception ex)
-                {
-                    waveOut = null;
-                    mainWindow.ShowError("Failed to play audio!\r\n" + ex.Message, "Audio failure");
+                    wavReader = new WaveFileReader(new MemoryStream(target.Data));
+                    InitAudio();
+                    waveOut.Init(wavReader);
+                    waveOut.Play();
                 }
+                else if (target.Data[0] == 'O' && target.Data[1] == 'g' && target.Data[2] == 'g' && target.Data[3] == 'S')
+                {
+                    oggReader = new VorbisWaveReader(new MemoryStream(target.Data));
+                    InitAudio();
+                    waveOut.Init(oggReader);
+                    waveOut.Play();
+                } else
+                    mainWindow.ShowError("Failed to play audio!\r\nNot a WAV or OGG.", "Audio failure");
+            } catch (Exception ex)
+            {
+                waveOut = null;
+                mainWindow.ShowError("Failed to play audio!\r\n" + ex.Message, "Audio failure");
             }
         }
+    }
 
 
-        private void Stop_Click(object sender, RoutedEventArgs e)
-        {
-            if (waveOut != null)
-                waveOut.Stop();
-        }
+    private void Stop_Click(object sender, RoutedEventArgs e)
+    {
+        if (waveOut != null)
+            waveOut.Stop();
     }
 }

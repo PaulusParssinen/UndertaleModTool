@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net9.0-windows</TargetFramework>
         <RollForward>LatestMajor</RollForward>
         <OutputType>WinExe</OutputType>
         <!-- TODO: this should properly get migrated and get rid of -->
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <UseWpf>true</UseWpf>
         <DebugType>embedded</DebugType>
-        <Platforms>AnyCPU;x64</Platforms>
-        <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
+        <Platforms>x64</Platforms>
+        <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
         <LangVersion>10</LangVersion>
         <ApplicationIcon>icon.ico</ApplicationIcon>
         <GenerateDocumentationFile>True</GenerateDocumentationFile>

@@ -39,7 +39,7 @@ namespace UndertaleModLib.Models;
 /// </code>
 /// <see href="https://github.com/UnderminersTeam/UndertaleModTool/wiki/Bytecode-17#tgin-new-chunk"/>.</remarks>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleTextureGroupInfo : UndertaleNamedResource, IDisposable
+public class UndertaleTextureGroupInfo : IUndertaleNamedResource, IDisposable
 {
     /// <summary>
     /// The name of the texture group info entry.
@@ -175,7 +175,7 @@ public class UndertaleTextureGroupInfo : UndertaleNamedResource, IDisposable
         reader.ReadUndertaleObject(Tilesets);
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;

@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace UndertaleModLib.ModelsDebug
-{
-    public class UndertaleInstanceVars : UndertaleResource
-    {
-        public void Serialize(UndertaleWriter writer)
-        {
-            throw new NotImplementedException();
-        }
+namespace UndertaleModLib.ModelsDebug;
 
-        public void Unserialize(UndertaleReader reader)
-        {
-            throw new NotImplementedException();
-        }
+public class UndertaleInstanceVars : IUndertaleResource
+{
+    public void Serialize(UndertaleWriter writer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Unserialize(UndertaleReader reader)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -6,7 +6,7 @@ namespace UndertaleModLib.Models;
 /// A font entry of a data file.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleFont : UndertaleNamedResource, IDisposable
+public class UndertaleFont : IUndertaleNamedResource, IDisposable
 {
     /// <summary>
     /// The name of the font.
@@ -115,7 +115,7 @@ public class UndertaleFont : UndertaleNamedResource, IDisposable
     /// Glyphs that a font can use.
     /// </summary>
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class Glyph : UndertaleObject, IDisposable
+    public class Glyph : IUndertaleObject, IDisposable
     {
         /// <summary>
         /// The code point of character for the glyph.
@@ -184,7 +184,7 @@ public class UndertaleFont : UndertaleNamedResource, IDisposable
             Kerning = reader.ReadUndertaleObject<UndertaleSimpleListShort<GlyphKerning>>();
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             reader.Position += 14;
@@ -195,7 +195,7 @@ public class UndertaleFont : UndertaleNamedResource, IDisposable
         /// <summary>
         /// A class representing kerning for a glyph.
         /// </summary>
-        public class GlyphKerning : UndertaleObject, IStaticChildObjectsSize
+        public class GlyphKerning : IUndertaleObject, IStaticChildObjectsSize
         {
             /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
             public static readonly uint ChildObjectsSize = 4;
@@ -342,7 +342,7 @@ public class UndertaleFont : UndertaleNamedResource, IDisposable
         Glyphs = reader.ReadUndertaleObject<UndertalePointerList<Glyph>>();
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         int skipSize = 40;

@@ -6,25 +6,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace UndertaleModTool
+namespace UndertaleModTool;
+
+public class EqualityConverter : IMultiValueConverter
 {
-    public class EqualityConverter : IMultiValueConverter
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (values == null)
-                return values;
+        if (values == null)
+            return values;
 
-            if (values.Length < 2)
-                return false;
+        if (values.Length < 2)
+            return false;
 
-            bool invert = parameter is string par && par == "invert";
-            return (values[0] == values[1]) ^ invert;
-        }
+        bool invert = parameter is string par && par == "invert";
+        return (values[0] == values[1]) ^ invert;
+    }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

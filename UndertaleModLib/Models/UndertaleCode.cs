@@ -13,7 +13,7 @@ namespace UndertaleModLib.Models;
 /// <summary>
 /// A bytecode instruction.
 /// </summary>
-public class UndertaleInstruction : UndertaleObject
+public class UndertaleInstruction : IUndertaleObject
 {
     /// <summary>
     /// Possible opcodes an instruction can use.
@@ -227,7 +227,7 @@ public class UndertaleInstruction : UndertaleObject
         int NameStringID { get; set; }
     }
 
-    public class Reference<T> : UndertaleObject where T : class, UndertaleObject, ReferencedObject
+    public class Reference<T> : IUndertaleObject where T : class, IUndertaleObject, ReferencedObject
     {
         public uint NextOccurrenceOffset { get; set; } = 0xdead;
         public VariableType Type { get; set; }
@@ -360,7 +360,7 @@ public class UndertaleInstruction : UndertaleObject
         }
     }
 
-    public Reference<T> GetReference<T>(bool allowResolve = false) where T : class, UndertaleObject, ReferencedObject
+    public Reference<T> GetReference<T>(bool allowResolve = false) where T : class, IUndertaleObject, ReferencedObject
     {
         Reference<T> res = (Destination as Reference<T>) ?? (Function as Reference<T>) ?? (Value as Reference<T>);
         if (allowResolve && res == null)
@@ -784,7 +784,7 @@ public class UndertaleInstruction : UndertaleObject
                 throw new IOException("Unknown opcode " + Kind.ToString().ToUpper(CultureInfo.InvariantCulture));
         }
     }
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         long instructionStartAddress = reader.Position;
@@ -1093,7 +1093,7 @@ public static class UndertaleInstructionUtil
 /// A code entry in a data file.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleCode : UndertaleNamedResource, UndertaleObjectWithBlobs, IDisposable
+public class UndertaleCode : IUndertaleNamedResource, IUndertaleObjectWithBlobs, IDisposable
 {
     /// <summary>
     /// The name of the code entry.
@@ -1261,7 +1261,7 @@ public class UndertaleCode : UndertaleNamedResource, UndertaleObjectWithBlobs, I
             CurrCodeIndex++;
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;

@@ -15,56 +15,55 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UndertaleModLib.Models;
 
-namespace UndertaleModTool
+namespace UndertaleModTool;
+
+/// <summary>
+/// Interaction logic for UndertaleShaderEditor.xaml
+/// </summary>
+public partial class UndertaleShaderEditor : DataUserControl
 {
-    /// <summary>
-    /// Interaction logic for UndertaleShaderEditor.xaml
-    /// </summary>
-    public partial class UndertaleShaderEditor : DataUserControl
+    private static readonly MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
+
+    public UndertaleShaderEditor()
     {
-        private static readonly MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
+        InitializeComponent();
+    }
 
-        public UndertaleShaderEditor()
+    private void TextEditor_Loaded(object sender, RoutedEventArgs e)
+    {
+        var editor = sender as TextEditor;
+        if (editor is null)
         {
-            InitializeComponent();
+            mainWindow.ShowError("Cannot load the code of one of the shader properties - the editor is not found?");
+            return;
         }
 
-        private void TextEditor_Loaded(object sender, RoutedEventArgs e)
+        var srcString = editor.DataContext as UndertaleString;
+        if (srcString is null)
         {
-            var editor = sender as TextEditor;
-            if (editor is null)
-            {
-                mainWindow.ShowError("Cannot load the code of one of the shader properties - the editor is not found?");
-                return;
-            }
-
-            var srcString = editor.DataContext as UndertaleString;
-            if (srcString is null)
-            {
-                mainWindow.ShowError("Cannot load the code of one of the shader properties - the source string object is null.");
-                return;
-            }
-
-            editor.Text = srcString.Content;
+            mainWindow.ShowError("Cannot load the code of one of the shader properties - the source string object is null.");
+            return;
         }
 
-        private void TextEditor_LostFocus(object sender, RoutedEventArgs e)
+        editor.Text = srcString.Content;
+    }
+
+    private void TextEditor_LostFocus(object sender, RoutedEventArgs e)
+    {
+        var editor = sender as TextEditor;
+        if (editor is null)
         {
-            var editor = sender as TextEditor;
-            if (editor is null)
-            {
-                mainWindow.ShowError("The changes weren't saved - the editor is not found?");
-                return;
-            }
-
-            var srcString = editor.DataContext as UndertaleString;
-            if (srcString is null)
-            {
-                mainWindow.ShowError("The changes weren't saved - the source string object is null.");
-                return;
-            }
-
-            srcString.Content = editor.Text;
+            mainWindow.ShowError("The changes weren't saved - the editor is not found?");
+            return;
         }
+
+        var srcString = editor.DataContext as UndertaleString;
+        if (srcString is null)
+        {
+            mainWindow.ShowError("The changes weren't saved - the source string object is null.");
+            return;
+        }
+
+        srcString.Content = editor.Text;
     }
 }

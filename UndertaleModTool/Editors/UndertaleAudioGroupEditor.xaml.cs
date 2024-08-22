@@ -13,16 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UndertaleModTool
+namespace UndertaleModTool;
+
+/// <summary>
+/// Logika interakcji dla klasy UndertaleAudioGroupEditor.xaml
+/// </summary>
+public partial class UndertaleAudioGroupEditor : DataUserControl
 {
-    /// <summary>
-    /// Logika interakcji dla klasy UndertaleAudioGroupEditor.xaml
-    /// </summary>
-    public partial class UndertaleAudioGroupEditor : DataUserControl
+    public UndertaleAudioGroupEditor()
     {
-        public UndertaleAudioGroupEditor()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

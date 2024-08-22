@@ -20,135 +20,134 @@ using System.Windows.Threading;
 using UndertaleModLib.Models;
 using static UndertaleModLib.Models.UndertaleRoom;
 
-namespace UndertaleModTool
+namespace UndertaleModTool;
+
+/// <summary>
+/// Interaction logic for UndertaleRoomRenderer.xaml
+/// </summary>
+public partial class UndertaleRoomRenderer : DataUserControl
 {
-    /// <summary>
-    /// Interaction logic for UndertaleRoomRenderer.xaml
-    /// </summary>
-    public partial class UndertaleRoomRenderer : DataUserControl
+    public static DependencyProperty PreviewPathProperty =
+        DependencyProperty.Register("PreviewPath", typeof(UndertalePath),
+            typeof(UndertaleRoomRenderer),
+            new FrameworkPropertyMetadata(null));
+
+    public static readonly PropertyInfo visualOffProp = typeof(Canvas).GetProperty("VisualOffset", BindingFlags.NonPublic | BindingFlags.Instance);
+
+    public static DataTemplate RoomRendererTemplate { get; set; }
+
+    private Canvas roomCanvas;
+    public UndertalePath PreviewPath
     {
-        public static DependencyProperty PreviewPathProperty =
-            DependencyProperty.Register("PreviewPath", typeof(UndertalePath),
-                typeof(UndertaleRoomRenderer),
-                new FrameworkPropertyMetadata(null));
+        get => (UndertalePath)GetValue(PreviewPathProperty);
+        set => SetValue(PreviewPathProperty, value);
+    }
 
-        public static readonly PropertyInfo visualOffProp = typeof(Canvas).GetProperty("VisualOffset", BindingFlags.NonPublic | BindingFlags.Instance);
+    private bool bgGridDisabled;
+    private Brush gridOpacMask;
 
-        public static DataTemplate RoomRendererTemplate { get; set; }
+    public UndertaleRoomRenderer()
+    {
+        InitializeComponent();
+    }
 
-        private Canvas roomCanvas;
-        public UndertalePath PreviewPath
+    private void RoomRenderer_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (DataContext is not UndertaleRoom room)
+            return;
+
+        UndertaleRoomEditor.SetupRoomWithGrids(room);
+        UndertaleRoomEditor.GenerateSpriteCache(room);
+
+        ParticleSystemRectConverter.ClearDict();
+        foreach (var layer in room.Layers)
         {
-            get => (UndertalePath)GetValue(PreviewPathProperty);
-            set => SetValue(PreviewPathProperty, value);
-        }
-
-        private bool bgGridDisabled;
-        private Brush gridOpacMask;
-
-        public UndertaleRoomRenderer()
-        {
-            InitializeComponent();
-        }
-
-        private void RoomRenderer_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (DataContext is not UndertaleRoom room)
-                return;
-
-            UndertaleRoomEditor.SetupRoomWithGrids(room);
-            UndertaleRoomEditor.GenerateSpriteCache(room);
-
-            ParticleSystemRectConverter.ClearDict();
-            foreach (var layer in room.Layers)
+            if (layer.LayerType == LayerType.Assets)
             {
-                if (layer.LayerType == LayerType.Assets)
+                if (layer.AssetsData.ParticleSystems is not null)
                 {
-                    if (layer.AssetsData.ParticleSystems is not null)
-                    {
-                        var particleSystems = layer.AssetsData.ParticleSystems.Select(x => x.ParticleSystem);
-                        ParticleSystemRectConverter.Initialize(particleSystems);
-                    }
-                    
+                    var particleSystems = layer.AssetsData.ParticleSystems.Select(x => x.ParticleSystem);
+                    ParticleSystemRectConverter.Initialize(particleSystems);
                 }
+                
             }
         }
+    }
 
-        private void RoomCanvas_Loaded(object sender, RoutedEventArgs e)
-        {
-            roomCanvas = sender as Canvas;
-        }
+    private void RoomCanvas_Loaded(object sender, RoutedEventArgs e)
+    {
+        roomCanvas = sender as Canvas;
+    }
 
-        public void SaveImagePNG(Stream outfile, bool displayGrid = false, bool last = false)
+    public void SaveImagePNG(Stream outfile, bool displayGrid = false, bool last = false)
+    {
+        Dispatcher.Invoke(DispatcherPriority.ContextIdle, (Action)(() =>
         {
-            Dispatcher.Invoke(DispatcherPriority.ContextIdle, (Action)(() =>
+            if (roomCanvas is null)
             {
-                if (roomCanvas is null)
-                {
-                    if (MainWindow.FindVisualChild<Canvas>(RoomGraphics) is Canvas canv && canv.Name == "RoomCanvas")
-                        roomCanvas = canv;
-                    else
-                        throw new Exception("\"RoomCanvas\" not found.");
-                }
+                if (MainWindow.FindVisualChild<Canvas>(RoomGraphics) is Canvas canv && canv.Name == "RoomCanvas")
+                    roomCanvas = canv;
+                else
+                    throw new Exception("\"RoomCanvas\" not found.");
+            }
 
-                object prevOffset = null;
-                if (last)
-                    prevOffset = visualOffProp.GetValue(roomCanvas);
+            object prevOffset = null;
+            if (last)
+                prevOffset = visualOffProp.GetValue(roomCanvas);
 
-                visualOffProp.SetValue(roomCanvas, new Vector(0, 0)); // (probably, there is a better way to fix the offset of the rendered picture)
+            visualOffProp.SetValue(roomCanvas, new Vector(0, 0)); // (probably, there is a better way to fix the offset of the rendered picture)
 
-                if (!displayGrid && !bgGridDisabled)
-                {
-                    if (gridOpacMask is null)
-                        gridOpacMask = roomCanvas.OpacityMask;
+            if (!displayGrid && !bgGridDisabled)
+            {
+                if (gridOpacMask is null)
+                    gridOpacMask = roomCanvas.OpacityMask;
 
-                    roomCanvas.OpacityMask = null;
-                    bgGridDisabled = true;
-                }
+                roomCanvas.OpacityMask = null;
+                bgGridDisabled = true;
+            }
 
-                RenderTargetBitmap target = new((int)roomCanvas.RenderSize.Width, (int)roomCanvas.RenderSize.Height, 96, 96, PixelFormats.Pbgra32);
+            RenderTargetBitmap target = new((int)roomCanvas.RenderSize.Width, (int)roomCanvas.RenderSize.Height, 96, 96, PixelFormats.Pbgra32);
 
-                target.Render(roomCanvas);
+            target.Render(roomCanvas);
 
-                PngBitmapEncoder encoder = new() { Interlace = PngInterlaceOption.Off };
-                encoder.Frames.Add(BitmapFrame.Create(target));
-                encoder.Save(outfile);
+            PngBitmapEncoder encoder = new() { Interlace = PngInterlaceOption.Off };
+            encoder.Frames.Add(BitmapFrame.Create(target));
+            encoder.Save(outfile);
 
-                if (!displayGrid && last)
-                {
-                    visualOffProp.SetValue(roomCanvas, prevOffset);
-                    roomCanvas.OpacityMask = gridOpacMask;
-                }
-            }));
-        }
+            if (!displayGrid && last)
+            {
+                visualOffProp.SetValue(roomCanvas, prevOffset);
+                roomCanvas.OpacityMask = gridOpacMask;
+            }
+        }));
+    }
+}
+
+public class RoomCaptionConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        UndertaleRoom room = value as UndertaleRoom;
+        return room is not null ? $"{room.Name.Content}: {room.Width}x{room.Height}" : "null";
+    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotSupportedException();
+    }
+}
+
+public class LayersOrderedConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is IList<UndertaleRoom.Layer> layers)
+            return layers.OrderByDescending(l => l.LayerDepth);
+        else
+            return null;
     }
 
-    public class RoomCaptionConverter : IValueConverter
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            UndertaleRoom room = value as UndertaleRoom;
-            return room is not null ? $"{room.Name.Content}: {room.Width}x{room.Height}" : "null";
-        }
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
-    }
-
-    public class LayersOrderedConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is IList<UndertaleRoom.Layer> layers)
-                return layers.OrderByDescending(l => l.LayerDepth);
-            else
-                return null;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace UndertaleModTool
+namespace UndertaleModTool;
+
+/// <summary>
+/// Interaction logic for UndertaleParticleSystemEmitterEditor.xaml
+/// </summary>
+public partial class UndertaleParticleSystemEmitterEditor : DataUserControl
 {
-    /// <summary>
-    /// Interaction logic for UndertaleParticleSystemEmitterEditor.xaml
-    /// </summary>
-    public partial class UndertaleParticleSystemEmitterEditor : DataUserControl
+    public UndertaleParticleSystemEmitterEditor()
     {
-        public UndertaleParticleSystemEmitterEditor()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

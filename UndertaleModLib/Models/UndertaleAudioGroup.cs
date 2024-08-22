@@ -11,7 +11,7 @@ namespace UndertaleModLib.Models;
 /// <seealso cref="UndertaleSound.AudioEntryFlags.Regular"/>
 /// <seealso cref="UndertaleSound"/>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleAudioGroup : UndertaleNamedResource, IStaticChildObjectsSize, IDisposable
+public class UndertaleAudioGroup : IUndertaleNamedResource, IStaticChildObjectsSize, IDisposable
 {
     /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
     public static readonly uint ChildObjectsSize = 4;

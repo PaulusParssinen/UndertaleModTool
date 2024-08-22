@@ -7,7 +7,7 @@ namespace UndertaleModLib.Models;
 /// <summary>
 /// Sound entry in a data file.
 /// </summary>
-public class UndertaleSound : UndertaleNamedResource, INotifyPropertyChanged, IDisposable
+public class UndertaleSound : IUndertaleNamedResource, INotifyPropertyChanged, IDisposable
 {
     /// <summary>
     /// Audio entry flags a sound entry can use.
@@ -221,7 +221,7 @@ public class UndertaleSound : UndertaleNamedResource, INotifyPropertyChanged, ID
             AudioLength = reader.ReadSingle();
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;

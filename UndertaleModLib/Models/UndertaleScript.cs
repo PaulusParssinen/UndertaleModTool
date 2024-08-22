@@ -6,7 +6,7 @@ namespace UndertaleModLib.Models;
 /// <summary>
 /// A script entry in a data file.
 /// </summary>
-public class UndertaleScript : UndertaleNamedResource, INotifyPropertyChanged, IStaticChildObjectsSize, IDisposable
+public class UndertaleScript : IUndertaleNamedResource, INotifyPropertyChanged, IStaticChildObjectsSize, IDisposable
 {
     /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
     public static readonly uint ChildObjectsSize = 8;

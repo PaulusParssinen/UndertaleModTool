@@ -13,16 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UndertaleModTool
+namespace UndertaleModTool;
+
+/// <summary>
+/// Logika interakcji dla klasy UndertaleVariableEditor.xaml
+/// </summary>
+public partial class UndertaleVariableEditor : DataUserControl
 {
-    /// <summary>
-    /// Logika interakcji dla klasy UndertaleVariableEditor.xaml
-    /// </summary>
-    public partial class UndertaleVariableEditor : DataUserControl
+    public UndertaleVariableEditor()
     {
-        public UndertaleVariableEditor()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

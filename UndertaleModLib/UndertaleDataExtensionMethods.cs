@@ -11,15 +11,15 @@ namespace UndertaleModLib;
 public static class UndertaleDataExtensionMethods
 {
 	/// <summary>
-	/// An extension method, that returns the element in a <see cref="List{T}"/> of <see cref="UndertaleNamedResource"/>s
+	/// An extension method, that returns the element in a <see cref="List{T}"/> of <see cref="IUndertaleNamedResource"/>s
 	/// that has a specified <paramref name="name"/>.
 	/// </summary>
-	/// <param name="list">The <see cref="List{T}"/> of <see cref="UndertaleNamedResource"/>s to search in.</param>
-	/// <param name="name">The name of the <see cref="UndertaleNamedResource"/> to find.</param>
+	/// <param name="list">The <see cref="List{T}"/> of <see cref="IUndertaleNamedResource"/>s to search in.</param>
+	/// <param name="name">The name of the <see cref="IUndertaleNamedResource"/> to find.</param>
 	/// <param name="ignoreCase">Whether casing should be ignored for searching.</param>
-	/// <typeparam name="T">A type of <see cref="UndertaleNamedResource"/>.</typeparam>
+	/// <typeparam name="T">A type of <see cref="IUndertaleNamedResource"/>.</typeparam>
 	/// <returns>The element that has the specified name.</returns>
-	public static T ByName<T>(this IList<T> list, string name, bool ignoreCase = false) where T : UndertaleNamedResource
+	public static T ByName<T>(this IList<T> list, string name, bool ignoreCase = false) where T : IUndertaleNamedResource
 	{
 		StringComparison comparisonType = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 

@@ -53,7 +53,7 @@ public enum UndertaleExtensionVarType : uint
 /// A class representing an argument for <see cref="UndertaleExtensionFunction"/>s.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleExtensionFunctionArg : UndertaleObject, IStaticChildObjectsSize
+public class UndertaleExtensionFunctionArg : IUndertaleObject, IStaticChildObjectsSize
 {
     /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
     public static readonly uint ChildObjectsSize = 4;
@@ -97,7 +97,7 @@ public class UndertaleExtensionFunctionArg : UndertaleObject, IStaticChildObject
 /// A function in a <see cref="UndertaleExtension"/>.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleExtensionFunction : UndertaleObject, IDisposable
+public class UndertaleExtensionFunction : IUndertaleObject, IDisposable
 {
     /// <summary>
     /// The name of the function.
@@ -151,7 +151,7 @@ public class UndertaleExtensionFunction : UndertaleObject, IDisposable
         Arguments = reader.ReadUndertaleObject<UndertaleSimpleList<UndertaleExtensionFunctionArg>>();
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         reader.Position += 20;
@@ -180,7 +180,7 @@ public class UndertaleExtensionFunction : UndertaleObject, IDisposable
 /// A file that's used in an <see cref="UndertaleExtension"/>.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleExtensionFile : UndertaleObject, IDisposable
+public class UndertaleExtensionFile : IUndertaleObject, IDisposable
 {
     /// <summary>
     /// The filename of this extension file.
@@ -227,7 +227,7 @@ public class UndertaleExtensionFile : UndertaleObject, IDisposable
         Functions = reader.ReadUndertaleObject<UndertalePointerList<UndertaleExtensionFunction>>();
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;
@@ -273,7 +273,7 @@ public class UndertaleExtensionFile : UndertaleObject, IDisposable
 /// An option that's used in an <see cref="UndertaleExtension"/>.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleExtensionOption : UndertaleNamedResource, IStaticChildObjectsSize, IDisposable
+public class UndertaleExtensionOption : IUndertaleNamedResource, IStaticChildObjectsSize, IDisposable
 {
     /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
     public static readonly uint ChildObjectsSize = 12;
@@ -346,7 +346,7 @@ public class UndertaleExtensionOption : UndertaleNamedResource, IStaticChildObje
 /// An extension entry in a GameMaker data file.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleExtension : UndertaleNamedResource, IDisposable
+public class UndertaleExtension : IUndertaleNamedResource, IDisposable
 {
     /// <summary>
     /// In which folder the extension is located. TODO: needs more GM8 research.
@@ -445,7 +445,7 @@ public class UndertaleExtension : UndertaleNamedResource, IDisposable
         }
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;

@@ -6,7 +6,7 @@ namespace UndertaleModLib.Models;
 /// An animation curve entry in a data file. These were introduced in GameMaker 2.3.0
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleAnimationCurve : UndertaleNamedResource, IDisposable
+public class UndertaleAnimationCurve : IUndertaleNamedResource, IDisposable
 {
     /// <summary>
     /// TODO: unknown
@@ -76,13 +76,13 @@ public class UndertaleAnimationCurve : UndertaleNamedResource, IDisposable
         Channels = reader.ReadUndertaleObject<UndertaleSimpleList<Channel>>();
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         return UnserializeChildObjectCount(reader, true);
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     /// <param name="reader">Where to deserialize from.</param>
     /// <param name="includeName">Whether to include <see cref="Name"/> in the deserialization.</param>
     public static uint UnserializeChildObjectCount(UndertaleReader reader, bool includeName)
@@ -119,7 +119,7 @@ public class UndertaleAnimationCurve : UndertaleNamedResource, IDisposable
     /// A channel in an animation curve.
     /// </summary>
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class Channel : UndertaleNamedResource, IDisposable
+    public class Channel : IUndertaleNamedResource, IDisposable
     {
         /// <summary>
         /// The curve type determines how points flow to each other in a channel.
@@ -174,7 +174,7 @@ public class UndertaleAnimationCurve : UndertaleNamedResource, IDisposable
             Points = reader.ReadUndertaleObject<UndertaleSimpleList<Point>>();
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             reader.Position += 12;
@@ -225,7 +225,7 @@ public class UndertaleAnimationCurve : UndertaleNamedResource, IDisposable
         /// <summary>
         /// A point which can exist on a <see cref="Channel"/>.
         /// </summary>
-        public class Point : UndertaleObject
+        public class Point : IUndertaleObject
         {
             /// <summary>
             /// The X coordinate of this point. GameMaker abbreviates this to "h".

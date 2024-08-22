@@ -1,7 +1,7 @@
 using System.Windows;
 
-namespace UndertaleModTool
-{
+namespace UndertaleModTool;
+
 	/// <summary>
 	/// Provides <see cref="MessageBox"/> extensions for <see cref="Window"/>s.
 	/// </summary>
@@ -74,4 +74,3 @@ namespace UndertaleModTool
 			return window.Dispatcher.Invoke(() => MessageBox.Show(window, text, title, buttons, image));
 		}
 	}
-}

@@ -8,7 +8,7 @@ namespace UndertaleModLib.Models;
 /// </summary>
 /// <remarks></remarks>
 // TODO: Never seen in GMS1.4 so uncertain if the structure was the same.
-public class UndertaleGlobalInit : UndertaleObject, INotifyPropertyChanged, IDisposable
+public class UndertaleGlobalInit : IUndertaleObject, INotifyPropertyChanged, IDisposable
 {
     private UndertaleResourceById<UndertaleCode, UndertaleChunkCODE> _code = new();
 

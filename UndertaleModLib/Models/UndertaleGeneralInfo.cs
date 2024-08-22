@@ -11,7 +11,7 @@ namespace UndertaleModLib.Models;
 /// General info about a data file.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleGeneralInfo : UndertaleObject, IDisposable
+public class UndertaleGeneralInfo : IUndertaleObject, IDisposable
 {
     /// <summary>
     /// Information flags a data file can use.
@@ -556,7 +556,7 @@ public class UndertaleGeneralInfo : UndertaleObject, IDisposable
         reader.Bytecode14OrLower = BytecodeVersion <= 14;
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         reader.Position++; // "IsDebuggerDisabled"
@@ -653,7 +653,7 @@ public class UndertaleGeneralInfo : UndertaleObject, IDisposable
 /// General options about a data file.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleOptions : UndertaleObject, IDisposable
+public class UndertaleOptions : IUndertaleObject, IDisposable
 {
     /// <summary>
     /// Option flags a data file can use
@@ -799,7 +799,7 @@ public class UndertaleOptions : UndertaleObject, IDisposable
     /// A class for game constants.
     /// </summary>
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class Constant : UndertaleObject, IStaticChildObjectsSize, IDisposable
+    public class Constant : IUndertaleObject, IStaticChildObjectsSize, IDisposable
     {
         public static readonly uint ChildObjectsSize = 8;
         /// <summary>
@@ -963,7 +963,7 @@ public class UndertaleOptions : UndertaleObject, IDisposable
         }
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;
@@ -997,7 +997,7 @@ public class UndertaleOptions : UndertaleObject, IDisposable
 }
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleLanguage : UndertaleObject, IDisposable
+public class UndertaleLanguage : IUndertaleObject, IDisposable
 {
     // Seems to be a list of entry IDs paired to strings for several languages
     public uint Unknown1 { get; set; } = 1;

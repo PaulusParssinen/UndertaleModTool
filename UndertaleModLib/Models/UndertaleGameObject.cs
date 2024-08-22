@@ -29,7 +29,7 @@ public enum CollisionShapeFlags : uint
 /// <summary>
 /// A game object in a data file.
 /// </summary>
-public class UndertaleGameObject : UndertaleNamedResource, INotifyPropertyChanged, IDisposable
+public class UndertaleGameObject : IUndertaleNamedResource, INotifyPropertyChanged, IDisposable
 {
     public UndertaleResourceById<UndertaleSprite, UndertaleChunkSPRT> _sprite = new();
     public UndertaleResourceById<UndertaleGameObject, UndertaleChunkOBJT> _parentId = new();
@@ -257,7 +257,7 @@ public class UndertaleGameObject : UndertaleNamedResource, INotifyPropertyChange
         Events = reader.ReadUndertaleObject<UndertalePointerList<UndertalePointerList<Event>>>();
     }
 
-    /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+    /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;
@@ -420,7 +420,7 @@ public class UndertaleGameObject : UndertaleNamedResource, INotifyPropertyChange
     /// Generic events that an <see cref="UndertaleGameObject"/> uses.
     /// </summary>
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class Event : UndertaleObject, IDisposable
+    public class Event : IUndertaleObject, IDisposable
     {
         /// <summary>
         /// The subtype of this event.
@@ -485,7 +485,7 @@ public class UndertaleGameObject : UndertaleNamedResource, INotifyPropertyChange
             Actions = reader.ReadUndertaleObject<UndertalePointerList<EventAction>>();
         }
 
-        /// <inheritdoc cref="UndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
+        /// <inheritdoc cref="IUndertaleObject.UnserializeChildObjectCount(UndertaleReader)"/>
         public static uint UnserializeChildObjectCount(UndertaleReader reader)
         {
             reader.Position += 4; // "EventSubtype"
@@ -507,7 +507,7 @@ public class UndertaleGameObject : UndertaleNamedResource, INotifyPropertyChange
     /// <summary>
     /// An action in an event.
     /// </summary>
-    public class EventAction : UndertaleObject, INotifyPropertyChanged, IDisposable,
+    public class EventAction : IUndertaleObject, INotifyPropertyChanged, IDisposable,
                                IStaticChildObjectsSize, IStaticChildObjCount
     {
         /// <inheritdoc cref="IStaticChildObjCount.ChildObjectCount" />
@@ -596,7 +596,7 @@ public class UndertaleGameObject : UndertaleNamedResource, INotifyPropertyChange
     /// Class representing a physics vertex used for a <see cref="CollisionShape"/> of type <see cref="CollisionShapeFlags.Custom"/>.
     /// </summary>
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class UndertalePhysicsVertex : UndertaleObject, IStaticChildObjectsSize
+    public class UndertalePhysicsVertex : IUndertaleObject, IStaticChildObjectsSize
     {
         /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
         public static readonly uint ChildObjectsSize = 8;

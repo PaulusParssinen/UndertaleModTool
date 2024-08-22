@@ -22,7 +22,7 @@ namespace UndertaleModLib.Models;
 /// 32-bit pointer to something relating to a texture page entry?
 /// </code>
 /// <see href="https://github.com/UnderminersTeam/UndertaleModTool/issues/4#issuecomment-421844420"/>.</remarks>
-public class UndertaleEmbeddedImage : UndertaleNamedResource, IStaticChildObjectsSize, IDisposable
+public class UndertaleEmbeddedImage : IUndertaleNamedResource, IStaticChildObjectsSize, IDisposable
 {
     /// <inheritdoc cref="IStaticChildObjectsSize.ChildObjectsSize" />
     public static readonly uint ChildObjectsSize = 8;

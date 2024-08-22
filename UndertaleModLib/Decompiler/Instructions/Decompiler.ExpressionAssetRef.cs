@@ -102,7 +102,7 @@ public static partial class Decompiler
                 }
 
                 if (assetList != null && AssetIndex >= 0 && AssetIndex < assetList.Count)
-                    return ((UndertaleNamedResource)assetList[AssetIndex]).Name.Content;
+                    return ((IUndertaleNamedResource)assetList[AssetIndex]).Name.Content;
             }
             return $"/* ERROR: missing {AssetRefType} asset, using ID instead */ {AssetIndex}";
         }
