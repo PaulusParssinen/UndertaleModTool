@@ -8,7 +8,7 @@ public static partial class Decompiler
     /// Represents an unnamed value that gets passed around the stack.
     /// Theoretically, these should be cleaned up and removed by the end of decompilation.
     /// </summary>
-    public class TempVar
+    public sealed class TempVar
     {
         public string Name;
         public UndertaleInstruction.DataType Type;
@@ -19,9 +19,6 @@ public static partial class Decompiler
             Name = MakeTemporaryVarName(id);
         }
 
-        public static string MakeTemporaryVarName(int id)
-        {
-            return "_temp_local_var_" + id;
-        }
+        public static string MakeTemporaryVarName(int id) => "_temp_local_var_" + id;
     }
 }

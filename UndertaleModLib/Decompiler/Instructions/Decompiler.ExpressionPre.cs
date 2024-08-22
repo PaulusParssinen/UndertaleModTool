@@ -5,7 +5,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // Represents pre increments and decrements, such as ++a and --a.
-    public class ExpressionPre : Expression
+    public sealed class ExpressionPre : Expression
     {
         public UndertaleInstruction.Opcode Opcode;
         public Expression Variable;

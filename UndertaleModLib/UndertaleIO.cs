@@ -31,23 +31,23 @@ public class UndertaleResourceById<T, ChunkT> : UndertaleResourceRef, IStaticChi
 
     public UndertaleResourceById()
     {
-        this.CachedId = -1;
+        CachedId = -1;
     }
 
     public UndertaleResourceById(int id = -1)
     {
-        this.CachedId = id;
+        CachedId = id;
     }
 
     public UndertaleResourceById(T res)
     {
-        this.Resource = res;
+        Resource = res;
     }
 
     public UndertaleResourceById(T res, int id = -1)
     {
-        this.Resource = res;
-        this.CachedId = id;
+        Resource = res;
+        CachedId = id;
     }
 
     private static ChunkT FindListChunk(UndertaleData data)
@@ -610,7 +610,7 @@ public class UndertaleReader : AdaptiveBinaryReader
 
         if (unreadObjects.Count > 0)
         {
-            throw new IOException("Found pointer targets that were never read:\n" + String.Join("\n", unreadObjects.Take(10).Select((x) => "0x" + x.ToString("X8") + " (" + objectPool[x].GetType().Name + ")")) + (unreadObjects.Count > 10 ? "\n(and more, " + unreadObjects.Count + " total)" : ""));
+            throw new IOException("Found pointer targets that were never read:\n" + string.Join("\n", unreadObjects.Take(10).Select((x) => "0x" + x.ToString("X8") + " (" + objectPool[x].GetType().Name + ")")) + (unreadObjects.Count > 10 ? "\n(and more, " + unreadObjects.Count + " total)" : ""));
         }
     }
 
@@ -622,7 +622,7 @@ public class UndertaleReader : AdaptiveBinaryReader
         internal EnsureLengthOperation(UndertaleReader reader, uint expectedLength)
         {
             this.reader = reader;
-            this.startPos = (int)reader.Position;
+            startPos = (int)reader.Position;
             this.expectedLength = expectedLength;
         }
         public void ToHere()
@@ -655,7 +655,7 @@ public class UndertaleReader : AdaptiveBinaryReader
     }
 }
 
-public class UndertaleWriter : FileBinaryWriter
+public sealed class UndertaleWriter : FileBinaryWriter
 {
     internal UndertaleData undertaleData;
 
@@ -844,7 +844,7 @@ public class UndertaleWriter : FileBinaryWriter
         {
             var unwrittenObjects = pendingWrites.Concat(pendingStringWrites);
             throw new IOException("Found pointer targets that were never written:\n"
-                                  + String.Join("\n", unwrittenObjects.Take(10).Select((x) => x.Key + " at " + String.Join(", ", x.Value.Select((y) => "0x" + y.ToString("X8")))))
+                                  + string.Join("\n", unwrittenObjects.Take(10).Select((x) => x.Key + " at " + string.Join(", ", x.Value.Select((y) => "0x" + y.ToString("X8")))))
                                   + (unwrittenObjects.Count() > 10
                                      ? "\n(and more, " + unwrittenObjects.Count() + " total)"
                                      : ""));
@@ -867,12 +867,12 @@ public class UndertaleWriter : FileBinaryWriter
         internal WriteLengthOperation(UndertaleWriter writer)
         {
             this.writer = writer;
-            this.writePos = writer.Position;
+            writePos = writer.Position;
             writer.Write(0xDEADC0DEu);
         }
         public void FromHere()
         {
-            this.startPos = writer.Position;
+            startPos = writer.Position;
         }
         public uint ToHere()
         {

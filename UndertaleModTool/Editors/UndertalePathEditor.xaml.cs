@@ -111,8 +111,8 @@ public class PointsDisplayConverter : IValueConverter
         if (path.Points.Count == 0)
             return null;
 
-        Point boundingLow = new Point(Double.PositiveInfinity, Double.PositiveInfinity);
-        Point boundingHigh = new Point(Double.NegativeInfinity, Double.NegativeInfinity);
+        Point boundingLow = new Point(double.PositiveInfinity, double.PositiveInfinity);
+        Point boundingHigh = new Point(double.NegativeInfinity, double.NegativeInfinity);
         
         foreach(var point in path.Points)
         {

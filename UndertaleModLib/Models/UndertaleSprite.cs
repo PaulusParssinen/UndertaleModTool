@@ -350,7 +350,7 @@ public class UndertaleSprite : IUndertaleNamedResource, IPrePaddedObject, INotif
 
         public MaskEntry(byte[] data)
         {
-            this.Data = data;
+            Data = data;
         }
 
         /// <inheritdoc/>
@@ -1981,7 +1981,7 @@ public class UndertaleYYSWF : IUndertaleObject
     public void Serialize(UndertaleWriter writer)
     {
         writer.Align(4);
-        int len = (JPEGTable?.Length ?? 0) | Int32.MinValue;
+        int len = (JPEGTable?.Length ?? 0) | int.MinValue;
 
         writer.Write(len);
         writer.Write(Version);
@@ -1998,7 +1998,7 @@ public class UndertaleYYSWF : IUndertaleObject
     public void Unserialize(UndertaleReader reader)
     {
         reader.Align(4);
-        int jpeglen = reader.ReadInt32() & (~Int32.MinValue); // the length is ORed with int.MinValue.
+        int jpeglen = reader.ReadInt32() & (~int.MinValue); // the length is ORed with int.MinValue.
         Version = reader.ReadInt32();
         Util.DebugUtil.Assert(Version == 8 || Version == 7, "Invalid YYSWF version data! Expected 7 or 8, got " + Version);
 

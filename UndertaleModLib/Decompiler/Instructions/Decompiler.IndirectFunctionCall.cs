@@ -12,8 +12,8 @@ public static partial class Decompiler
 
         public IndirectFunctionCall(Expression func_this, Expression func, UndertaleInstruction.DataType returnType, List<Expression> args) : base(returnType, args)
         {
-            this.FunctionThis = func_this;
-            this.Function = func;
+            FunctionThis = func_this;
+            Function = func;
         }
 
         public override string ToString(DecompileContext context)
@@ -27,9 +27,9 @@ public static partial class Decompiler
             }
 
             if (Function is FunctionDefinition)
-                return String.Format("{0}({1})", Function.ToString(context), argumentString.ToString());
+                return string.Format("{0}({1})", Function.ToString(context), argumentString.ToString());
 
-            return String.Format("{0}.{1}({2})", FunctionThis.ToString(context), Function.ToString(context), argumentString.ToString());
+            return string.Format("{0}.{1}({2})", FunctionThis.ToString(context), Function.ToString(context), argumentString.ToString());
         }
 
         public override Statement CleanStatement(DecompileContext context, BlockHLStatement block)

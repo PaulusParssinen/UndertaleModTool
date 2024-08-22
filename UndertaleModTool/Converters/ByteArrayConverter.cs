@@ -23,8 +23,8 @@ public sealed class ByteArrayConverter : IValueConverter
     {
         try
         {
-            String hex = (String)value;
-            String[] hex_values = hex.Split(" ");
+            string hex = (string)value;
+            string[] hex_values = hex.Split(" ");
             if (hex_values.Length != 16)
                 return loaded_for_edit;
             bytes = new byte[hex_values.Length];

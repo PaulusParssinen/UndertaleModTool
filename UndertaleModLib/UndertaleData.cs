@@ -576,7 +576,7 @@ public class UndertaleData : IDisposable
         // So, a good helper is needed.
 
         uint id = 1; // first Id is always one, I checked.
-        foreach (var extn in this.Extensions)
+        foreach (var extn in Extensions)
         {
             foreach (var file in extn.Files)
             {

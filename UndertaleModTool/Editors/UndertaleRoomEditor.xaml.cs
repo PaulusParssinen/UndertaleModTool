@@ -330,7 +330,7 @@ public partial class UndertaleRoomEditor : DataUserControl
     {
         e.Handled = true;
         IUndertaleObject clickedObj = (sender as FrameworkElement).DataContext as IUndertaleObject;
-        UndertaleRoom room = this.DataContext as UndertaleRoom;
+        UndertaleRoom room = DataContext as UndertaleRoom;
         Layer layer = null;
         if (room.Layers.Count > 0)
             layer = clickedObj switch
@@ -676,7 +676,7 @@ public partial class UndertaleRoomEditor : DataUserControl
     {
         if (placingTiles)
         {
-            UndertaleRoom room = this.DataContext as UndertaleRoom;
+            UndertaleRoom room = DataContext as UndertaleRoom;
             var other = selectedObject as IUndertaleObject;
 
             var mousePos = e.GetPosition(roomCanvas);
@@ -691,7 +691,7 @@ public partial class UndertaleRoomEditor : DataUserControl
     {
         if (movingObj != null)
         {
-            UndertaleRoom room = this.DataContext as UndertaleRoom;
+            UndertaleRoom room = DataContext as UndertaleRoom;
 
             var mousePos = e.GetPosition(roomCanvas);
 
@@ -746,7 +746,7 @@ public partial class UndertaleRoomEditor : DataUserControl
         var tileSelector = element.FindName("TileSelector") as Rectangle;
         var mousePos = e.GetPosition(element);
         var clickedTile = tileSelector.DataContext as Tile;
-        UndertaleRoom room = this.DataContext as UndertaleRoom;
+        UndertaleRoom room = DataContext as UndertaleRoom;
 
         Point gridMouseCoordinates = GetGridMouseCoordinates(mousePos, room);
         scaleOriginX = gridMouseCoordinates.X;
@@ -767,7 +767,7 @@ public partial class UndertaleRoomEditor : DataUserControl
 
         var clickedTile = tileSelector.DataContext as Tile;
 
-        UndertaleRoom room = this.DataContext as UndertaleRoom;
+        UndertaleRoom room = DataContext as UndertaleRoom;
 
         Point gridMouseCoordinates = GetGridMouseCoordinates(mousePos, room);
 
@@ -1207,7 +1207,7 @@ public partial class UndertaleRoomEditor : DataUserControl
                 toChange.Y = undoGameObject.Y;
             }
         }
-        (this.DataContext as UndertaleRoom)?.SetupRoom(false, false);
+        (DataContext as UndertaleRoom)?.SetupRoom(false, false);
     }
 
     public void Command_Paste(object sender, ExecutedRoutedEventArgs e)
@@ -1222,7 +1222,7 @@ public partial class UndertaleRoomEditor : DataUserControl
 
         if (copied != null)
         {
-            UndertaleRoom room = this.DataContext as UndertaleRoom;
+            UndertaleRoom room = DataContext as UndertaleRoom;
             Layer layer = null;
             if (room.Layers.Count > 0)
             {
@@ -1252,7 +1252,7 @@ public partial class UndertaleRoomEditor : DataUserControl
 
     private void AddLayer<T>(LayerType type, string name) where T : Layer.LayerData, new()
     {
-        UndertaleRoom room = this.DataContext as UndertaleRoom;
+        UndertaleRoom room = DataContext as UndertaleRoom;
         if (room is null)
         {
             // (not sure if it's possible)
@@ -1280,9 +1280,9 @@ public partial class UndertaleRoomEditor : DataUserControl
         if (room.Layers.Count > 0)
         {
             layerDepth = room.Layers.Select(l => l.LayerDepth).Max();
-            if (layerDepth + 100 > Int32.MaxValue)
+            if (layerDepth + 100 > int.MaxValue)
             {
-                if (layerDepth + 1 > Int32.MaxValue)
+                if (layerDepth + 1 > int.MaxValue)
                 {
                     layerDepth -= 1;
                     mainWindow.ShowWarning("Warning - the maximum layer depth is reached.\nYou probably should change the depth of the new layer.");
@@ -1308,7 +1308,7 @@ public partial class UndertaleRoomEditor : DataUserControl
                 if (numMatch.Success)
                 {
                     baseName = name[..^numMatch.Length];
-                    nameNum = Int32.Parse(numMatch.Groups[0].Value) + 1;
+                    nameNum = int.Parse(numMatch.Groups[0].Value) + 1;
                 }
                 // Name doesn't have a trailing number, so it's the first duplicate.
                 // Thus we set baseName and nameNum to produce "name1" on the next loop.
@@ -1377,7 +1377,7 @@ public partial class UndertaleRoomEditor : DataUserControl
 
     private void AddGMS2ObjectInstance(Layer layer)
     {
-        UndertaleRoom room = this.DataContext as UndertaleRoom;
+        UndertaleRoom room = DataContext as UndertaleRoom;
 
         GameObject newObject = new() { InstanceID = mainWindow.Data.GeneralInfo.LastObj++ };
         room.GameObjects.Add(newObject);
@@ -1443,7 +1443,7 @@ public partial class UndertaleRoomEditor : DataUserControl
     /// <param name="obj">The object to delete.</param>
     private void DeleteItem(IUndertaleObject obj)
     {
-        UndertaleRoom room = this.DataContext as UndertaleRoom;
+        UndertaleRoom room = DataContext as UndertaleRoom;
 
         // We need to check before deleting the object but can only clear the editor after deleting the object
         bool clearEditor = (obj == (ObjectEditor.Content as IUndertaleObject));
@@ -1543,7 +1543,7 @@ public partial class UndertaleRoomEditor : DataUserControl
             return;
         }
 
-        if (this.DataContext is not UndertaleRoom room)
+        if (DataContext is not UndertaleRoom room)
             return;
 
         if (obj is GameObject)
@@ -1645,11 +1645,11 @@ public partial class UndertaleRoomEditor : DataUserControl
 
     private void MenuItem_NewObjectInstance_Click(object sender, RoutedEventArgs e)
     {
-        AddObjectInstance(this.DataContext as UndertaleRoom);
+        AddObjectInstance(DataContext as UndertaleRoom);
     }
     private void MenuItem_NewGMS1Tile_Click(object sender, RoutedEventArgs e)
     {
-        AddGMS1Tile(this.DataContext as UndertaleRoom);
+        AddGMS1Tile(DataContext as UndertaleRoom);
     }
     private void MenuItem_Delete_Click(object sender, RoutedEventArgs e)
     {
@@ -1665,7 +1665,7 @@ public partial class UndertaleRoomEditor : DataUserControl
 
     private void MenuItem_Paste_Click(object sender, RoutedEventArgs e)
     {
-        UndertaleRoom room = this.DataContext as UndertaleRoom;
+        UndertaleRoom room = DataContext as UndertaleRoom;
         MenuItem menuitem = sender as MenuItem;
         Layer layer = mainWindow.IsGMS2 == Visibility.Visible ?
             menuitem.DataContext as Layer : null;
@@ -1801,7 +1801,7 @@ public partial class UndertaleRoomEditor : DataUserControl
 
         StringBuilder sb = new();
         foreach (uint[] dataRow in layer.TilesData.TileData)
-            sb.AppendLine(String.Join(";", dataRow.Select(x => x.ToString())));
+            sb.AppendLine(string.Join(";", dataRow.Select(x => x.ToString())));
 
         string dataFolder = System.IO.Path.GetDirectoryName((Application.Current.MainWindow as MainWindow).FilePath);
         string filePath = System.IO.Path.Combine(dataFolder, $"{layer.LayerName.Content}_tiledata.csv");
@@ -1856,7 +1856,7 @@ public partial class UndertaleRoomEditor : DataUserControl
             }
 
             char delimChar = ';';
-            Func<string, uint> numParseFunc = (x) => UInt32.Parse(x);
+            Func<string, uint> numParseFunc = (x) => uint.Parse(x);
             if (tileDataLines[0].Count(x => x == ',') > 1)
             {
                 var res = mainWindow.ShowQuestion("Was the data exported from \"Tiled\"?");
@@ -1866,7 +1866,7 @@ public partial class UndertaleRoomEditor : DataUserControl
                     numParseFunc = (x) =>
                     {
                         uint val;
-                        unchecked { val = (uint)Int32.Parse(x); }
+                        unchecked { val = (uint)int.Parse(x); }
                         if (val == uint.MaxValue)
                             return 0;
 
@@ -2303,18 +2303,18 @@ public class BGViewportConverter : IMultiValueConverter
         if (tiledV)
         {
             if (!stretch)
-                rect.SetCurrentValue(Rectangle.HeightProperty, roomHeight);         // changing value without losing its binding
+                rect.SetCurrentValue(FrameworkElement.HeightProperty, roomHeight);         // changing value without losing its binding
             else
-                rect.GetBindingExpression(Rectangle.HeightProperty).UpdateTarget(); // restoring value from its source
+                rect.GetBindingExpression(FrameworkElement.HeightProperty).UpdateTarget(); // restoring value from its source
 
             translateT.SetCurrentValue(TranslateTransform.YProperty, (double)0);
         }
         else
         {
             if (!stretch)
-                rect.GetBindingExpression(Rectangle.HeightProperty).UpdateTarget();
+                rect.GetBindingExpression(FrameworkElement.HeightProperty).UpdateTarget();
             else
-                rect.SetCurrentValue(Rectangle.HeightProperty, texture.SourceHeight - offsetV);
+                rect.SetCurrentValue(FrameworkElement.HeightProperty, texture.SourceHeight - offsetV);
 
             BindingOperations.GetBindingExpression(translateT, TranslateTransform.YProperty).UpdateTarget();
         }
@@ -2322,18 +2322,18 @@ public class BGViewportConverter : IMultiValueConverter
         if (tiledH)
         {
             if (!stretch)
-                rect.SetCurrentValue(Rectangle.WidthProperty, roomWidth);
+                rect.SetCurrentValue(FrameworkElement.WidthProperty, roomWidth);
             else
-                rect.GetBindingExpression(Rectangle.WidthProperty).UpdateTarget();
+                rect.GetBindingExpression(FrameworkElement.WidthProperty).UpdateTarget();
 
             translateT.SetCurrentValue(TranslateTransform.XProperty, (double)0);
         }
         else
         {
             if (!stretch)
-                rect.GetBindingExpression(Rectangle.WidthProperty).UpdateTarget();
+                rect.GetBindingExpression(FrameworkElement.WidthProperty).UpdateTarget();
             else
-                rect.SetCurrentValue(Rectangle.WidthProperty, texture.SourceWidth - offsetH);
+                rect.SetCurrentValue(FrameworkElement.WidthProperty, texture.SourceWidth - offsetH);
 
             BindingOperations.GetBindingExpression(translateT, TranslateTransform.XProperty).UpdateTarget();
         }

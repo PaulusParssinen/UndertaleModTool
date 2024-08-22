@@ -12,13 +12,13 @@ public static partial class Decompiler
 
         public DirectFunctionCall(string overridenName, UndertaleFunction function, UndertaleInstruction.DataType returnType, List<Expression> args) : base(returnType, args)
         {
-            this.OverridenName = overridenName;
-            this.Function = function;
+            OverridenName = overridenName;
+            Function = function;
         }
 
         public DirectFunctionCall(UndertaleFunction function, UndertaleInstruction.DataType returnType, List<Expression> args) : base(returnType, args)
         {
-            this.Function = function;
+            Function = function;
         }
 
         public override string ToString(DecompileContext context)
@@ -79,7 +79,7 @@ public static partial class Decompiler
                 }
                 context.currentFunction = null;
 
-                return String.Format("new {0}({1})", constructor, argumentString);
+                return string.Format("new {0}({1})", constructor, argumentString);
             }
             else
             {
@@ -104,7 +104,7 @@ public static partial class Decompiler
                 if (Function.Name.Content == "@@NewGMLArray@@") // Inline array definitions
                     return "[" + argumentString.ToString() + "]";
 
-                return String.Format("{0}({1})", OverridenName != string.Empty ? OverridenName : Function.Name.Content, argumentString.ToString());
+                return string.Format("{0}({1})", OverridenName != string.Empty ? OverridenName : Function.Name.Content, argumentString.ToString());
             }
         }
 
@@ -144,15 +144,15 @@ public static partial class Decompiler
                     if (script_code.ParentEntry != null)
                     {
                         childContext = new DecompileContext(context.GlobalContext, script_code.ParentEntry);
-                        Dictionary<uint, Block> blocks = Decompiler.PrepareDecompileFlow(script_code.ParentEntry, new List<uint>() { script_code.Offset / 4 });
-                        Decompiler.DecompileFromBlock(childContext, blocks, blocks[script_code.Offset / 4]);
+                        Dictionary<uint, Block> blocks = PrepareDecompileFlow(script_code.ParentEntry, new List<uint>() { script_code.Offset / 4 });
+                        DecompileFromBlock(childContext, blocks, blocks[script_code.Offset / 4]);
                         Decompiler.DoTypePropagation(childContext, blocks); // TODO: This should probably put suggestedType through the "return" statement at the other end
                     }
                     else
                     {
                         childContext = new DecompileContext(context.GlobalContext, script_code);
-                        Dictionary<uint, Block> blocks = Decompiler.PrepareDecompileFlow(script_code, new List<uint>() { 0 });
-                        Decompiler.DecompileFromBlock(childContext, blocks, blocks[0]);
+                        Dictionary<uint, Block> blocks = PrepareDecompileFlow(script_code, new List<uint>() { 0 });
+                        DecompileFromBlock(childContext, blocks, blocks[0]);
                         Decompiler.DoTypePropagation(childContext, blocks); // TODO: This should probably put suggestedType through the "return" statement at the other end
                     }
                     context.GlobalContext.ScriptArgsCache[funcName] = new AssetIDType[15];

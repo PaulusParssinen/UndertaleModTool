@@ -124,7 +124,7 @@ public static partial class Decompiler
                     if (checkEqual(Destination, v1) && two.Opcode != UndertaleInstruction.Opcode.Shl && two.Opcode != UndertaleInstruction.Opcode.Shr && two.Opcode != UndertaleInstruction.Opcode.Rem)
                     {
                         if (!(context.GlobalContext.Data?.GeneralInfo?.BytecodeVersion > 14 && v1.Opcode != UndertaleInstruction.Opcode.Push && Destination.Var.InstanceType != UndertaleInstruction.InstanceType.Self))
-                            return String.Format("{0}{1} {2}= {3}", varPrefix, varName, Expression.OperationToPrintableString(two.Opcode), two.Argument2.ToString(context));
+                            return string.Format("{0}{1} {2}= {3}", varPrefix, varName, Expression.OperationToPrintableString(two.Opcode), two.Argument2.ToString(context));
                     }
                 }
             }
@@ -137,7 +137,7 @@ public static partial class Decompiler
             else
                 stringOfValue = Value.ToString(context);
 
-            return String.Format("{0}{1}{2} {3}", varPrefix, varName, context.DecompilingStruct ? ":" : " =", stringOfValue);
+            return string.Format("{0}{1}{2} {3}", varPrefix, varName, context.DecompilingStruct ? ":" : " =", stringOfValue);
         }
 
         public override Statement CleanStatement(DecompileContext context, BlockHLStatement block)

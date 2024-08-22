@@ -163,7 +163,7 @@ public partial class UndertaleFontEditor : DataUserControl
         GlyphsGrid.Visibility = Visibility.Collapsed;
         GlyphsGrid.IsEnabled = false;
 
-        GlyphKerningGrid.SetBinding(DataGrid.ItemsSourceProperty,
+        GlyphKerningGrid.SetBinding(ItemsControl.ItemsSourceProperty,
                                     new Binding() { Source = glyph.Kerning });
         GlyphKerningBorder.Visibility = Visibility.Visible;
         GlyphKerningGrid.IsEnabled = true;
@@ -175,7 +175,7 @@ public partial class UndertaleFontEditor : DataUserControl
 
     private void KerningBackButton_Click(object sender, RoutedEventArgs e)
     {
-        BindingOperations.ClearBinding(GlyphKerningGrid, DataGrid.ItemsSourceProperty);
+        BindingOperations.ClearBinding(GlyphKerningGrid, ItemsControl.ItemsSourceProperty);
         GlyphKerningBorder.Visibility = Visibility.Collapsed;
         GlyphKerningGrid.IsEnabled = false;
 

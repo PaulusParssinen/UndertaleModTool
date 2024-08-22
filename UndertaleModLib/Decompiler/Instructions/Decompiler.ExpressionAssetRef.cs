@@ -6,7 +6,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // Represents a reference to an asset in the resource tree, used in 2023.8+ only
-    public class ExpressionAssetRef : Expression
+    public sealed class ExpressionAssetRef : Expression
     {
         // NOTE: Also see generalized "ResourceType" enum. This has slightly differing values, though
         public enum RefType

@@ -5,16 +5,16 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // Represents a unary expression.
-    public class ExpressionOne : Expression
+    public sealed class ExpressionOne : Expression
     {
         public UndertaleInstruction.Opcode Opcode;
         public Expression Argument;
 
         public ExpressionOne(UndertaleInstruction.Opcode opcode, UndertaleInstruction.DataType targetType, Expression argument)
         {
-            this.Opcode = opcode;
-            this.Type = targetType;
-            this.Argument = argument;
+            Opcode = opcode;
+            Type = targetType;
+            Argument = argument;
         }
 
         internal override bool IsDuplicationSafe()
@@ -35,8 +35,8 @@ public static partial class Decompiler
                 op = "!"; // This is a logical negation instead, see #93
             string arg = Argument.ToString(context);
             if (arg.Contains(' ', StringComparison.InvariantCulture))
-                return String.Format("({0}({1}))", op, arg);
-            return String.Format("({0}{1})", op, arg);
+                return string.Format("({0}({1}))", op, arg);
+            return string.Format("({0}{1})", op, arg);
         }
 
         internal override AssetIDType DoTypePropagation(DecompileContext context, AssetIDType suggestedType)

@@ -28,11 +28,11 @@ public sealed class ByteGUIDArrayConverter : IValueConverter
     {
         try
         {
-            String hex = (String)value;
-            String[] hex_values = hex.Split(" ");
+            string hex = (string)value;
+            string[] hex_values = hex.Split(" ");
             if (hex_values.Length != 16)
                 return loaded_for_edit;
-            String[] hex_values_reversed = new string[16];
+            string[] hex_values_reversed = new string[16];
             hex_values_reversed[0] = hex_values[3];
             hex_values_reversed[1] = hex_values[2];
             hex_values_reversed[2] = hex_values[1];

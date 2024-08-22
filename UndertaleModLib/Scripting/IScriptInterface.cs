@@ -20,7 +20,7 @@ public class ScriptException : Exception
     /// <summary>
     /// Initializes a new instance of the IOException class with its message string set to <paramref name="msg"/>.
     /// </summary>
-    /// <param name="msg">A <see cref="String"/> that describes the error. The content of <paramref name="msg"/> is intended to be understood by humans.</param>
+    /// <param name="msg">A <see cref="string"/> that describes the error. The content of <paramref name="msg"/> is intended to be understood by humans.</param>
     public ScriptException(string msg) : base(msg)
     {
     }
@@ -68,7 +68,7 @@ public interface IScriptInterface
     bool ScriptExecutionSuccess { get; }
 
     /// <summary>
-    /// Error message of the last executed script. Will be <c>""</c> (<see cref="String.Empty"/>) if no error occured.
+    /// Error message of the last executed script. Will be <c>""</c> (<see cref="string.Empty"/>) if no error occured.
     /// </summary>
     string ScriptErrorMessage { get; }
 

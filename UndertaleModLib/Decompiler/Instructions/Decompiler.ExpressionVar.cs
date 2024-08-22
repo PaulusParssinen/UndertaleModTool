@@ -6,7 +6,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // Represents a variable in an expression, of any type.
-    public class ExpressionVar : Expression
+    public sealed class ExpressionVar : Expression
     {
         public UndertaleVariable Var;
         public Expression InstType; // UndertaleInstruction.InstanceType
@@ -114,7 +114,7 @@ public static partial class Decompiler
             if (InstType is ExpressionConstant constant) // Only use "global." and "other.", not "self." or "local.". GMS doesn't recognize those.
             {
                 string prefix = InstType.ToString(context) + ".";
-                if (!(constant.Value is Int64))
+                if (constant.Value is not long)
                 {
                     int? val = ExpressionConstant.ConvertToInt(constant.Value);
                     if (val != null)
@@ -128,7 +128,7 @@ public static partial class Decompiler
                 }
                 return prefix + name;
             }
-            else if (InstType is ExpressionCast cast && !(cast.Argument is ExpressionVar))
+            else if (InstType is ExpressionCast cast && cast.Argument is not ExpressionVar)
             {
                 return "(" + InstType.ToString(context) + ")." + name; // Make sure to put parentheses around these cases
             }
@@ -152,7 +152,7 @@ public static partial class Decompiler
             if (builtinSuggest != AssetIDType.Other)
                 current = builtinSuggest;
 
-            if ((VarType != UndertaleInstruction.VariableType.Array || (ArrayIndices != null && !(ArrayIndices[0] is ExpressionConstant))))
+            if ((VarType != UndertaleInstruction.VariableType.Array || (ArrayIndices != null && ArrayIndices[0] is not ExpressionConstant)))
                 context.assetTypes[Var] = current; // This is a messy fix to arrays messing up exported variable types.
             return current;
         }

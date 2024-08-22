@@ -15,7 +15,8 @@ public class FileBinaryWriter : BinaryWriter
 
     public Encoding Encoding { get => encoding; }
 
-    public FileBinaryWriter(Stream stream, Encoding encoding = null) : base(stream)
+    public FileBinaryWriter(Stream stream, Encoding encoding = null)
+        : base(stream)
     {
         if (encoding is not null)
             this.encoding = encoding;

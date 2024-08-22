@@ -1222,13 +1222,13 @@ public static partial class Compiler
                                     cw.Emit(Opcode.PushI, DataType.Int16).Value = (short)value.valueNumber;
                                     cw.typeStack.Push(DataType.Boolean);
                                 }
-                                else if ((double)((long)value.valueNumber) == value.valueNumber)
+                                else if ((long)value.valueNumber == value.valueNumber)
                                 {
                                     // It's an integer
                                     long valueAsInt = (long)value.valueNumber;
-                                    if (valueAsInt <= Int32.MaxValue && valueAsInt >= Int32.MinValue)
+                                    if (valueAsInt <= int.MaxValue && valueAsInt >= int.MinValue)
                                     {
-                                        if (valueAsInt <= Int16.MaxValue && valueAsInt >= Int16.MinValue)
+                                        if (valueAsInt <= short.MaxValue && valueAsInt >= short.MinValue)
                                         {
                                             // Int16
                                             cw.Emit(Opcode.PushI, DataType.Int16).Value = (short)valueAsInt;

@@ -5,7 +5,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // Represents a high-level operation-equals statement, such as a += 1.
-    public class OperationEqualsStatement : Statement
+    public sealed class OperationEqualsStatement : Statement
     {
         public ExpressionVar Destination;
         public UndertaleInstruction.Opcode Operation;
@@ -20,7 +20,7 @@ public static partial class Decompiler
 
         public override string ToString(DecompileContext context)
         {
-            return String.Format("{0} {1}= {2}", Destination.ToString(context), Expression.OperationToPrintableString(Operation), Value.ToString(context));
+            return $"{Destination.ToString(context)} {Expression.OperationToPrintableString(Operation)}= {Value.ToString(context)}";
         }
 
         public override Statement CleanStatement(DecompileContext context, BlockHLStatement block)

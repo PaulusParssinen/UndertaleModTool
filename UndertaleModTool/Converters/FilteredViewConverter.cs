@@ -27,7 +27,7 @@ public class FilteredViewConverter : DependencyObject, IValueConverter
         ICollectionView filteredView = CollectionViewSource.GetDefaultView(value);
         filteredView.Filter = (obj) =>
         {
-            if (String.IsNullOrEmpty(Filter))
+            if (string.IsNullOrEmpty(Filter))
                 return true;
             if (obj is ISearchable)
                 return (obj as ISearchable)?.SearchMatches(Filter) ?? false;

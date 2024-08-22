@@ -5,14 +5,14 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // Represents a tempvar inside of an expression.
-    public class ExpressionTempVar : Expression
+    public sealed class ExpressionTempVar : Expression
     {
         public TempVarReference Var;
 
         public ExpressionTempVar(TempVarReference var, UndertaleInstruction.DataType targetType)
         {
-            this.Var = var;
-            this.Type = targetType;
+            Var = var;
+            Type = targetType;
         }
 
         internal override bool IsDuplicationSafe()

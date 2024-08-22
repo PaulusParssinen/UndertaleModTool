@@ -230,7 +230,7 @@ public abstract class GameScriptTestBase : GameTestBase, IScriptInterface
 
     public async Task<bool> GenerateGMLCache(ThreadLocal<GlobalDecompileContext> decompileContext = null, object dialog = null, bool clearGMLEditedBefore = false)
     {
-        Console.WriteLine(String.Format("GenerateGMLCache(): *decompileContext*{0}, *dialog*{1}, {2}",
+        Console.WriteLine(string.Format("GenerateGMLCache(): *decompileContext*{0}, *dialog*{1}, {2}",
                                         decompileContext is null ? " (null)" : "",
                                         dialog is null ? " (null)" : "",
                                         clearGMLEditedBefore.ToString().ToLower())
@@ -312,6 +312,21 @@ public abstract class GameScriptTestBase : GameTestBase, IScriptInterface
     public string DummyString()
     {
         return "";
+    }
+
+    public Task ClickableSearchOutput(string title, string query, int resultsCount, IOrderedEnumerable<KeyValuePair<string, List<(int lineNum, string codeLine)>>> resultsDict, bool showInDecompiledView, IOrderedEnumerable<string> failedList = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task ClickableSearchOutput(string title, string query, int resultsCount, IDictionary<string, List<(int lineNum, string codeLine)>> resultsDict, bool showInDecompiledView, IEnumerable<string> failedList = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ChangeSelection(object newSelection, bool inNewTab = false)
+    {
+        throw new NotImplementedException();
     }
 }
 

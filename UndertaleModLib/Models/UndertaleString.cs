@@ -4,7 +4,7 @@
 /// A string entry a data file can have.
 /// </summary>
 [PropertyChanged.AddINotifyPropertyChangedInterface]
-public class UndertaleString : IUndertaleResource, ISearchable, IDisposable
+public sealed class UndertaleString : IUndertaleResource, ISearchable, IDisposable
 {
     /// <summary>
     /// The contents of the string.
@@ -24,7 +24,7 @@ public class UndertaleString : IUndertaleResource, ISearchable, IDisposable
     /// <param name="content">The content for the string.</param>
     public UndertaleString(string content)
     {
-        this.Content = content;
+        Content = content;
     }
 
     /// <inheritdoc />

@@ -120,7 +120,7 @@ public partial class FindReferencesResults : Window
                 Header = result.Key,
                 DataContext = result.Value
             };
-            item.SetBinding(TreeView.ItemsSourceProperty, new Binding(".")
+            item.SetBinding(ItemsControl.ItemsSourceProperty, new Binding(".")
             {
                 Converter = filterConv,
                 Mode = BindingMode.OneWay
@@ -199,7 +199,7 @@ public partial class FindReferencesResults : Window
 
         if (sourceObjName is not null)
         {
-            string invalidCharsRegex = '[' + String.Join("", Path.GetInvalidFileNameChars()) + ']';
+            string invalidCharsRegex = '[' + string.Join("", Path.GetInvalidFileNameChars()) + ']';
             sourceObjName = Regex.Replace(sourceObjName, invalidCharsRegex, "_");
         }
                 

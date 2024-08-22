@@ -5,7 +5,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // This is basically ExpressionTwo, but allows for using symbols like && or || without creating new opcodes.
-    public class ExpressionTernary : Expression
+    public sealed class ExpressionTernary : Expression
     {
         public Expression Condition;
         public Expression TrueExpression;
@@ -13,10 +13,10 @@ public static partial class Decompiler
 
         public ExpressionTernary(UndertaleInstruction.DataType targetType, Expression Condition, Expression argument1, Expression argument2)
         {
-            this.Type = targetType;
+            Type = targetType;
             this.Condition = Condition;
-            this.TrueExpression = argument1;
-            this.FalseExpression = argument2;
+            TrueExpression = argument1;
+            FalseExpression = argument2;
         }
 
         internal override bool IsDuplicationSafe()

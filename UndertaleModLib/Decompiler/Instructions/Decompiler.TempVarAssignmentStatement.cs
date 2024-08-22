@@ -3,7 +3,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // Assignment statement for tempvars.
-    public class TempVarAssignmentStatement : Statement
+    public sealed class TempVarAssignmentStatement : Statement
     {
         public TempVarReference Var;
         public Expression Value;
@@ -22,7 +22,7 @@ public static partial class Decompiler
             if (context.GlobalContext.Data?.IsGameMaker2() ?? false && !HasVarKeyword && context.LocalVarDefines.Add(Var.Var.Name))
                 HasVarKeyword = true;
 
-            return String.Format("{0}{1} = {2}", (HasVarKeyword ? "var " : ""), Var.Var.Name, Value.ToString(context));
+            return $"{(HasVarKeyword ? "var " : "")}{Var.Var.Name} = {Value.ToString(context)}";
         }
 
         public override Statement CleanStatement(DecompileContext context, BlockHLStatement block)

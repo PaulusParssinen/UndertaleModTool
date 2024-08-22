@@ -2,7 +2,7 @@ namespace UndertaleModLib.Decompiler;
 
 public static partial class Decompiler
 {
-    public class ContinueHLStatement : HLStatement
+    public sealed class ContinueHLStatement : HLStatement
     {
         public override string ToString(DecompileContext context)
         {

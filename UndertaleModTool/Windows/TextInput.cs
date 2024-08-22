@@ -62,7 +62,7 @@ public partial class TextInput : Form
     {
         InitializeComponent();
 
-        Icon = new Icon(App.GetResourceStream(new Uri("pack://application:,,,/icon.ico")).Stream); // "UndertaleModTool/icon.ico"
+        Icon = new Icon(System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/icon.ico")).Stream); // "UndertaleModTool/icon.ico"
         Message = message;
         Title = title;
         DefaultValue = defaultValue;
@@ -130,9 +130,9 @@ public partial class TextInput : Form
 
     private void button1_Click(object sender, EventArgs e)
     {
-        this.ReturnString = richTextBox1.Text;
-        this.DialogResult = DialogResult.OK;
-        this.Close();
+        ReturnString = richTextBox1.Text;
+        DialogResult = DialogResult.OK;
+        Close();
     }
 
     private void label1_Click(object sender, EventArgs e)

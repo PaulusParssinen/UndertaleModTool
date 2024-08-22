@@ -2391,7 +2391,7 @@ public class UndertaleRoom : IUndertaleNamedResource, INotifyPropertyChanged, ID
         public static UndertaleString GenerateRandomName(UndertaleData data)
         {
             // The same format as in "GameMaker Studio: 2".
-            return data.Strings.MakeString("graphic_" + ((uint)Random.Shared.Next(-Int32.MaxValue, Int32.MaxValue)).ToString("X8"));
+            return data.Strings.MakeString("graphic_" + ((uint)Random.Shared.Next(-int.MaxValue, int.MaxValue)).ToString("X8"));
         }
 
         /// <inheritdoc />
@@ -2554,7 +2554,7 @@ public class UndertaleRoom : IUndertaleNamedResource, INotifyPropertyChanged, ID
         /// </summary>
         public static UndertaleString GenerateRandomName(UndertaleData data)
         {
-            return data.Strings.MakeString("particle_" + ((uint)Random.Shared.Next(-Int32.MaxValue, Int32.MaxValue)).ToString("X8"));
+            return data.Strings.MakeString("particle_" + ((uint)Random.Shared.Next(-int.MaxValue, int.MaxValue)).ToString("X8"));
         }
 
         /// <inheritdoc />
@@ -2665,7 +2665,7 @@ public class UndertaleRoom : IUndertaleNamedResource, INotifyPropertyChanged, ID
         /// </summary>
         public static UndertaleString GenerateRandomName(UndertaleData data)
         {
-            return data.Strings.MakeString("textitem_" + ((uint)Random.Shared.Next(-Int32.MaxValue, Int32.MaxValue)).ToString("X8"));
+            return data.Strings.MakeString("textitem_" + ((uint)Random.Shared.Next(-int.MaxValue, int.MaxValue)).ToString("X8"));
         }
 
         /// <inheritdoc />

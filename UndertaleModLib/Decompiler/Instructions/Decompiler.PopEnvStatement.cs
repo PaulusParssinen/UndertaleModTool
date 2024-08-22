@@ -4,7 +4,7 @@ public static partial class Decompiler
 {
     // Represents a with statement ending (popping from or clearing the env stack).
     // This is not seen in high-level output.
-    public class PopEnvStatement : Statement
+    public sealed class PopEnvStatement : Statement
     {
         public override string ToString(DecompileContext context)
         {

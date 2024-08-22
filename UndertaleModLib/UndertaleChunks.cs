@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using UndertaleModLib.Models;
 using UndertaleModLib.Util;
 using static UndertaleModLib.Models.UndertaleRoom;
@@ -203,7 +204,7 @@ public class UndertaleChunkEXTN : UndertaleListChunk<UndertaleExtension>
         if (extCount > 0)
         {
             uint firstExtPtr = reader.ReadUInt32();
-            uint firstExtEndPtr = (extCount >= 2) ? reader.ReadUInt32() /* second ptr */ : (uint)(returnPosition + this.Length);
+            uint firstExtEndPtr = (extCount >= 2) ? reader.ReadUInt32() /* second ptr */ : (uint)(returnPosition + Length);
 
             reader.AbsPosition = firstExtPtr + 12;
             uint newPointer1 = reader.ReadUInt32();
@@ -211,7 +212,7 @@ public class UndertaleChunkEXTN : UndertaleListChunk<UndertaleExtension>
 
             if (newPointer1 != reader.AbsPosition)
                 definitely2022_6 = false; // first pointer mismatch
-            else if (newPointer2 <= reader.AbsPosition || newPointer2 >= (returnPosition + this.Length))
+            else if (newPointer2 <= reader.AbsPosition || newPointer2 >= (returnPosition + Length))
                 definitely2022_6 = false; // second pointer out of bounds
             else
             {
@@ -221,7 +222,7 @@ public class UndertaleChunkEXTN : UndertaleListChunk<UndertaleExtension>
                 if (optionCount > 0)
                 {
                     long newOffsetCheck = reader.AbsPosition + (4 * (optionCount - 1));
-                    if (newOffsetCheck >= (returnPosition + this.Length))
+                    if (newOffsetCheck >= (returnPosition + Length))
                     {
                         // Option count would place us out of bounds
                         definitely2022_6 = false;
@@ -230,7 +231,7 @@ public class UndertaleChunkEXTN : UndertaleListChunk<UndertaleExtension>
                     {
                         reader.Position += (4 * (optionCount - 1));
                         newOffsetCheck = reader.ReadUInt32() + 12; // jump past last option
-                        if (newOffsetCheck >= (returnPosition + this.Length))
+                        if (newOffsetCheck >= (returnPosition + Length))
                         {
                             // Pointer list element would place us out of bounds
                             definitely2022_6 = false;
@@ -696,7 +697,7 @@ public class UndertaleChunkFONT : UndertaleListChunk<UndertaleFont>
             reader.AbsPosition = firstFontPointer + 48; // There are 48 bytes of existing metadata.
             uint glyphsLength = reader.ReadUInt32();
             GMS2022_2 = true;
-            if ((glyphsLength * 4) > this.Length)
+            if ((glyphsLength * 4) > Length)
             {
                 GMS2022_2 = false;
             }
@@ -751,7 +752,7 @@ public class UndertaleChunkFONT : UndertaleListChunk<UndertaleFont>
 
             uint glyphsLength = reader.ReadUInt32();
             GMS2023_6 = true;
-            if ((glyphsLength * 4) > this.Length)
+            if ((glyphsLength * 4) > Length)
             {
                 GMS2023_6 = false;
             }
@@ -853,7 +854,7 @@ public class UndertaleChunkOBJT : UndertaleListChunk<UndertaleGameObject>
             // If any of these checks fail, it's 2022.5
             GM2022_5 = true;
             // Bounds check on vertex data
-            if (reader.Position + 12 + vertexCount * 8 < positionToReturn + this.Length)
+            if (reader.Position + 12 + vertexCount * 8 < positionToReturn + Length)
             {
                 reader.Position += 12 + vertexCount * 8;
                 // A pointer list of events
@@ -1743,7 +1744,7 @@ public class UndertaleChunkTGIN : UndertaleListChunk<UndertaleTextureGroupInfo>
         if (tginCount > 0)
         {
             uint tginPtr = reader.ReadUInt32();
-            uint secondTginPtr = (tginCount >= 2) ? reader.ReadUInt32() : (uint)(returnPosition + this.Length);
+            uint secondTginPtr = (tginCount >= 2) ? reader.ReadUInt32() : (uint)(returnPosition + Length);
             reader.AbsPosition = tginPtr + 4;
 
             // Check to see if the pointer located at this address points within this object

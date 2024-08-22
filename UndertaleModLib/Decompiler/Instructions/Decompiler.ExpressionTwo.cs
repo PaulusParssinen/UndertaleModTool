@@ -5,7 +5,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // Represents a binary expression.
-    public class ExpressionTwo : Expression
+    public sealed class ExpressionTwo : Expression
     {
         public UndertaleInstruction.Opcode Opcode;
         public UndertaleInstruction.DataType Type2;
@@ -14,11 +14,11 @@ public static partial class Decompiler
 
         public ExpressionTwo(UndertaleInstruction.Opcode opcode, UndertaleInstruction.DataType targetType, UndertaleInstruction.DataType type2, Expression argument1, Expression argument2)
         {
-            this.Opcode = opcode;
-            this.Type = targetType;
-            this.Type2 = type2;
-            this.Argument1 = argument1;
-            this.Argument2 = argument2;
+            Opcode = opcode;
+            Type = targetType;
+            Type2 = type2;
+            Argument1 = argument1;
+            Argument2 = argument2;
         }
 
         internal override bool IsDuplicationSafe()
@@ -81,7 +81,7 @@ public static partial class Decompiler
                 
             }
 
-            return (needsParens ? String.Format("({0})", arg) : arg);
+            return (needsParens ? string.Format("({0})", arg) : arg);
         }
 
         public string ToStringNoParens(DecompileContext context)
@@ -93,14 +93,14 @@ public static partial class Decompiler
             {
                 // If both arguments are a boolean type, this is a non-short-circuited logical condition
                 if (Type == UndertaleInstruction.DataType.Boolean && Type2 == UndertaleInstruction.DataType.Boolean)
-                    return String.Format("{0} {1}{1} {2}", arg1, OperationToPrintableString(Opcode), arg2);
+                    return string.Format("{0} {1}{1} {2}", arg1, OperationToPrintableString(Opcode), arg2);
             }
-            return String.Format("{0} {1} {2}", arg1, OperationToPrintableString(Opcode), arg2);
+            return string.Format("{0} {1} {2}", arg1, OperationToPrintableString(Opcode), arg2);
         }
 
         public override string ToString(DecompileContext context)
         {
-            return String.Format("({0})", ToStringNoParens(context));
+            return string.Format("({0})", ToStringNoParens(context));
         }
 
         internal override AssetIDType DoTypePropagation(DecompileContext context, AssetIDType suggestedType)

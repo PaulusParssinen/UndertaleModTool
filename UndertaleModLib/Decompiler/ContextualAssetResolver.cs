@@ -7,21 +7,21 @@ public class ContextualAssetResolver
 {
     // Is there a better way to do this?
     // Probably
-    public static Dictionary<string, Func<DecompileContext, Decompiler.FunctionCall, int, Decompiler.ExpressionConstant, string>> resolvers;
-    public static Dictionary<string, Func<DecompileContext, string, object, string>> variable_resolvers;
+    public static Dictionary<string, Func<DecompileContext, Decompiler.FunctionCall, int, Decompiler.ExpressionConstant, string>> Resolvers { get; set; }
+    public static Dictionary<string, Func<DecompileContext, string, object, string>> VariableResolvers { get; set; }
 
-    internal static Dictionary<Enum_EventType, Dictionary<int, string>> event_subtypes;
-    internal static Dictionary<int, string> blend_modes, gamepad_controls;
-    internal static Dictionary<string, string> macros;
+    private static Dictionary<Enum_EventType, Dictionary<int, string>> _eventSubtypes;
+    private static Dictionary<int, string> _blendModes, _gamepadControls;
+    private static Dictionary<string, string> _macros;
 
     public static void Initialize(UndertaleData data)
     {
         // TODO: make this nicer by not hacking
         // into the builtin list
-        event_subtypes = new Dictionary<Enum_EventType, Dictionary<int, string>>();
-        gamepad_controls = new Dictionary<int, string>();
-        blend_modes = new Dictionary<int, string>();
-        macros = new Dictionary<string, string>();
+        _eventSubtypes = new Dictionary<Enum_EventType, Dictionary<int, string>>();
+        _gamepadControls = new Dictionary<int, string>();
+        _blendModes = new Dictionary<int, string>();
+        _macros = new Dictionary<string, string>();
 
         // Don't use
         // Error because of loading audiogroup 
@@ -31,8 +31,8 @@ public class ContextualAssetResolver
             {
                 foreach (var constant in data.Options.Constants)
                 {
-                    if (!constant.Name.Content.StartsWith("@@", StringComparison.InvariantCulture))
-                        macros[constant.Value.Content] = constant.Name.Content;
+                    if (!constant.Name.Content.StartsWith("@@", StringComparison.Ordinal))
+                        _macros[constant.Value.Content] = constant.Name.Content;
                 }
             }
         }
@@ -40,27 +40,27 @@ public class ContextualAssetResolver
         var builtins = data.BuiltinList;
         var constants = builtins.Constants;
 
-        Func<string, Enum_EventType> GetEventTypeFromSubtype = (string subtype) =>
+        Enum_EventType GetEventTypeFromSubtype(string subtype)
         {
-            if (subtype.Contains("gesture", StringComparison.InvariantCulture))
+            if (subtype.Contains("gesture", StringComparison.Ordinal))
                 return Enum_EventType.ev_gesture;
-            if (subtype.Contains("gui", StringComparison.InvariantCulture) || subtype.Contains("draw", StringComparison.InvariantCulture)) // DrawGUI events are apparently just prefixed with ev_gui...
+            if (subtype.Contains("gui", StringComparison.Ordinal) || subtype.Contains("draw", StringComparison.Ordinal)) // DrawGUI events are apparently just prefixed with ev_gui...
                 return Enum_EventType.ev_draw;
-            if (subtype.Contains("step", StringComparison.InvariantCulture))
+            if (subtype.Contains("step", StringComparison.Ordinal))
                 return Enum_EventType.ev_step;
             // End me
-            if (subtype.Contains("user", StringComparison.InvariantCulture) || subtype.Contains("game_", StringComparison.InvariantCulture) ||
-               subtype.Contains("room_", StringComparison.InvariantCulture) || subtype.Contains("animation_end", StringComparison.InvariantCulture) ||
-               subtype.Contains("lives", StringComparison.InvariantCulture) || subtype.Contains("end_of_path", StringComparison.InvariantCulture) ||
-               subtype.Contains("health", StringComparison.InvariantCulture) || subtype.Contains("close_button", StringComparison.InvariantCulture) ||
-               subtype.Contains("outside", StringComparison.InvariantCulture) || subtype.Contains("boundary", StringComparison.InvariantCulture))
+            if (subtype.Contains("user", StringComparison.Ordinal) || subtype.Contains("game_", StringComparison.Ordinal) ||
+               subtype.Contains("room_", StringComparison.Ordinal) || subtype.Contains("animation_end", StringComparison.Ordinal) ||
+               subtype.Contains("lives", StringComparison.Ordinal) || subtype.Contains("end_of_path", StringComparison.Ordinal) ||
+               subtype.Contains("health", StringComparison.Ordinal) || subtype.Contains("close_button", StringComparison.Ordinal) ||
+               subtype.Contains("outside", StringComparison.Ordinal) || subtype.Contains("boundary", StringComparison.Ordinal))
                 return Enum_EventType.ev_other;
 
             // ev_close_button is handled above and the various joystick events are 
             // skipped in the loop
-            if (subtype.Contains("button", StringComparison.InvariantCulture) || subtype.Contains("mouse", StringComparison.InvariantCulture) ||
-                subtype.Contains("global", StringComparison.InvariantCulture) || subtype.Contains("press", StringComparison.InvariantCulture) ||
-                subtype.Contains("release", StringComparison.InvariantCulture))
+            if (subtype.Contains("button", StringComparison.Ordinal) || subtype.Contains("mouse", StringComparison.Ordinal) ||
+                subtype.Contains("global", StringComparison.Ordinal) || subtype.Contains("press", StringComparison.Ordinal) ||
+                subtype.Contains("release", StringComparison.Ordinal))
                 return Enum_EventType.ev_mouse;
 
 
@@ -70,36 +70,36 @@ public class ContextualAssetResolver
 
             // idk what exception to use
             throw new NotImplementedException("No event type for subtype " + subtype);
-        };
+        }
 
-        Func<Enum_EventType, Dictionary<int, string>> GetDictForEventType = (Enum_EventType type) =>
+        Dictionary<int, string> GetDictForEventType(Enum_EventType type)
         {
             // These 3 resolve to the same thing
             if (type == Enum_EventType.ev_keypress || type == Enum_EventType.ev_keyrelease)
                 type = Enum_EventType.ev_keyboard;
 
-            if (!event_subtypes.ContainsKey(type))
-                event_subtypes[type] = new Dictionary<int, string>();
+            if (!_eventSubtypes.ContainsKey(type))
+                _eventSubtypes[type] = new Dictionary<int, string>();
 
-            return event_subtypes[type];
-        };
+            return _eventSubtypes[type];
+        }
 
         // This is going to get bulky really quickly
         foreach (string constant in constants.Keys)
         {
-            if (constant.StartsWith("vk_", StringComparison.InvariantCulture))
+            if (constant.StartsWith("vk_", StringComparison.Ordinal))
                 GetDictForEventType(Enum_EventType.ev_keyboard)[(int)constants[constant]] = constant;
-            else if (constant.StartsWith("bm_") && !constant.Contains("colour", StringComparison.InvariantCulture))
-                blend_modes[(int)constants[constant]] = constant;
-            else if (constant.StartsWith("gp_", StringComparison.InvariantCulture))
-                gamepad_controls[(int)constants[constant]] = constant;
-            else if (constant.StartsWith("ev_") && !Enum.IsDefined(typeof(Enum_EventType), constant) && !constant.Contains("joystick", StringComparison.InvariantCulture))
+            else if (constant.StartsWith("bm_", StringComparison.Ordinal) && !constant.Contains("colour", StringComparison.Ordinal))
+                _blendModes[(int)constants[constant]] = constant;
+            else if (constant.StartsWith("gp_", StringComparison.Ordinal))
+                _gamepadControls[(int)constants[constant]] = constant;
+            else if (constant.StartsWith("ev_", StringComparison.Ordinal) && !Enum.IsDefined(typeof(Enum_EventType), constant) && !constant.Contains("joystick", StringComparison.Ordinal))
                 GetDictForEventType(GetEventTypeFromSubtype(constant))[(int)constants[constant]] = constant;
         }
 
 
         // Uncurse this some time
-        Func<Decompiler.Expression, Decompiler.ExpressionConstant> ConvertToConstExpression = (expr) =>
+        Decompiler.ExpressionConstant ConvertToConstExpression(Decompiler.Expression expr)
         {
             if (expr is Decompiler.ExpressionCast)
                 expr = (expr as Decompiler.ExpressionCast).Argument;
@@ -108,9 +108,9 @@ public class ContextualAssetResolver
                 return expr as Decompiler.ExpressionConstant;
 
             return null;
-        };
+        }
 
-        Func<Decompiler.Expression, int?> GetTypeInt = (expr) =>
+        int? GetTypeInt(Decompiler.Expression expr)
         {
             var constExpr = ConvertToConstExpression(expr);
 
@@ -118,13 +118,13 @@ public class ContextualAssetResolver
                 return null;
 
             return AssetTypeResolver.FindConstValue(Decompiler.ExpressionConstant.ConvertToEnumStr<Enum_EventType>(constExpr.Value));
-        };
+        }
 
-        Func<DecompileContext, Decompiler.FunctionCall, int, Decompiler.ExpressionConstant, string> resolve_event_perform = (context, func, index, self) =>
+        string resolve_event_perform(DecompileContext context, Decompiler.FunctionCall func, int index, Decompiler.ExpressionConstant self)
         {
             int? typeInt = GetTypeInt(func.Arguments[index - 1]);
 
-            if(typeInt != null)
+            if (typeInt != null)
             {
                 Enum_EventType type = (Enum_EventType)typeInt;
                 int? initialVal = Decompiler.ExpressionConstant.ConvertToInt(self.Value);
@@ -133,7 +133,7 @@ public class ContextualAssetResolver
 
                 int val = initialVal.Value;
 
-                var subtypes = event_subtypes;
+                var subtypes = _eventSubtypes;
                 if (type == Enum_EventType.ev_collision && val >= 0 && val < data.GameObjects.Count)
                     return data.GameObjects[val].Name.Content;
                 else if (type == Enum_EventType.ev_keyboard || type == Enum_EventType.ev_keypress || type == Enum_EventType.ev_keyrelease)
@@ -151,10 +151,10 @@ public class ContextualAssetResolver
             }
 
             return null;
-        };
+        }
 
         // TODO: Finish context-dependent variable resolution
-        variable_resolvers = new Dictionary<string, Func<DecompileContext, string, object, string>>()
+        VariableResolvers = new Dictionary<string, Func<DecompileContext, string, object, string>>()
         {
             { "scr_getbuttonsprite", (context, varname, value) =>
                 {
@@ -163,7 +163,7 @@ public class ContextualAssetResolver
             }
         };
 
-        resolvers = new Dictionary<string, Func<DecompileContext, Decompiler.FunctionCall, int, Decompiler.ExpressionConstant, string>>()
+        Resolvers = new Dictionary<string, Func<DecompileContext, Decompiler.FunctionCall, int, Decompiler.ExpressionConstant, string>>()
         {
             // TODO: __background* compatibility scripts
             { "event_perform", resolve_event_perform },
@@ -206,7 +206,7 @@ public class ContextualAssetResolver
                     if (val == null)
                         return null;
 
-                    return blend_modes.ContainsKey(val.Value) ? blend_modes[val.Value] : null;
+                    return _blendModes.ContainsKey(val.Value) ? _blendModes[val.Value] : null;
                 }
             },
             { "gpu_set_blendmode_ext", (context, func, index, self) =>
@@ -215,7 +215,7 @@ public class ContextualAssetResolver
                     if (val == null)
                         return null;
 
-                    return blend_modes.ContainsKey(val.Value) ? blend_modes[val.Value] : null;
+                    return _blendModes.ContainsKey(val.Value) ? _blendModes[val.Value] : null;
                 }
             },
             { "__view_set", (context, func, index, self) => 

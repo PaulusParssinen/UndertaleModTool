@@ -7,7 +7,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // Represents a base constant expression, such as a number (no operations).
-    public class ExpressionConstant : Expression
+    public sealed class ExpressionConstant : Expression
     {
         public object Value;
         public bool IsPushE;
@@ -42,12 +42,12 @@ public static partial class Decompiler
 
         public bool EqualsNumber(int TestNumber)
         {
-            return (Value is Int16 || Value is Int32) && Convert.ToInt32(Value) == TestNumber;
+            return (Value is short || Value is int) && Convert.ToInt32(Value) == TestNumber;
         }
 
         public bool EqualsBoolLike(bool TestBool)
         {
-            if (Value is Int16 || Value is Int32)
+            if (Value is short || Value is int)
                 return Convert.ToInt32(Value) == Convert.ToInt32(TestBool);
             return (Value is bool boolValue) && boolValue == TestBool;
         }
@@ -90,7 +90,7 @@ public static partial class Decompiler
             if (Value is float f) // More accurate, larger range, double to string.
                 return DoubleToString.StringOf(f);
 
-            if (Value is Int64 i && i <= int.MaxValue && i >= int.MinValue) // Decompiler accuracy improvement.
+            if (Value is long i && i <= int.MaxValue && i >= int.MinValue) // Decompiler accuracy improvement.
             {
                 return "(" + i + " << 0)";
             }
@@ -113,7 +113,7 @@ public static partial class Decompiler
             }
 
             // Archie: If statements are inefficient! Use a switch jump table!
-            if (AssetType == AssetIDType.GameObject && !(Value is Int64)) // When the value is Int64, an example value is 343434343434. It is unknown what it represents, but it's not an InstanceType.
+            if (AssetType == AssetIDType.GameObject && Value is not long) // When the value is Int64, an example value is 343434343434. It is unknown what it represents, but it's not an InstanceType.
             {
                 int? val = ConvertToInt(Value);
                 if (val != null && val < 0 && val >= -16)
@@ -171,7 +171,7 @@ public static partial class Decompiler
                 case AssetIDType.ContextDependent:
                 {
                     var func = context.currentFunction;
-                    if (func != null && (ContextualAssetResolver.resolvers?.ContainsKey(func.Function.Name.Content) ?? false))
+                    if (func != null && (ContextualAssetResolver.Resolvers?.ContainsKey(func.Function.Name.Content) ?? false))
                     {
                         List<Expression> actualArguments = new List<Expression>();
                         foreach (var arg in func.Arguments)
@@ -181,7 +181,7 @@ public static partial class Decompiler
                             else
                                 actualArguments.Add(arg);
                         }
-                        string result = ContextualAssetResolver.resolvers[func.Function.Name.Content](context, func, actualArguments.IndexOf(this), this);
+                        string result = ContextualAssetResolver.Resolvers[func.Function.Name.Content](context, func, actualArguments.IndexOf(this), this);
                         if (result != null)
                             return result;
                     }
@@ -189,7 +189,7 @@ public static partial class Decompiler
                     break;
 
                 case AssetIDType.Color:
-                    if (Value is IFormattable formattable && !(Value is float) && !(Value is double) && !(Value is decimal))
+                    if (Value is IFormattable formattable && Value is not float && Value is not double && Value is not decimal)
                     {
                         int vint = Convert.ToInt32(Value);
                         if (vint < 0) // negative value.
@@ -197,8 +197,8 @@ public static partial class Decompiler
                         else // guaranteed to be an unsigned int.
                         {
                             uint vuint = (uint)vint;
-                            if (Decompiler.ColorDictionary.ContainsKey(vuint))
-                                return Decompiler.ColorDictionary[vuint];
+                            if (ColorDictionary.ContainsKey(vuint))
+                                return ColorDictionary[vuint];
                             else
                                 return (context.GlobalContext.Data?.IsGameMaker2() ?? false ? "0x" : "$") + formattable.ToString("X6", CultureInfo.InvariantCulture); // not a known color and not negative.
                         }
@@ -264,7 +264,7 @@ public static partial class Decompiler
                         break;
                 }
 
-                if (!(Value is Int64)) // It is unknown what Int64 data represents, but it's not this.
+                if (Value is not long) // It is unknown what Int64 data represents, but it's not this.
                 {
                     int? tryVal = ConvertToInt(Value);
                     int val;
@@ -295,7 +295,7 @@ public static partial class Decompiler
                 if (val >= 0 && Enum.IsDefined(typeof(EventSubtypeKey), (uint)val))
                     return ((EventSubtypeKey)val).ToString(); // Either return the key enum, or the right alpha-numeric key-press.
 
-                if (!Char.IsControl((char)val) && !Char.IsLower((char)val) && val > 0) // The special keys overlay with the uppercase letters (ugh)
+                if (!char.IsControl((char)val) && !char.IsLower((char)val) && val > 0) // The special keys overlay with the uppercase letters (ugh)
                     return "ord(" + (((char)val) == '\'' ? (context.GlobalContext.Data?.IsGameMaker2() ?? false ? "\"\\\"\"" : "'\"'")
                         : (((char)val) == '\\' ? (context.GlobalContext.Data?.IsGameMaker2() ?? false ? "\"\\\\\"" : "\"\\\"")
                             : "\"" + (char)val + "\"")) + ")";

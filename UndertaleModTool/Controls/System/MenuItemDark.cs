@@ -30,7 +30,7 @@ public partial class MenuItemDark : MenuItem
     public override void OnApplyTemplate()
     {
         var rightArrow = MainWindow.FindVisualChild<Path>(this, "RightArrow");
-        rightArrow?.SetResourceReference(Path.FillProperty, SystemColors.MenuTextBrushKey);
+        rightArrow?.SetResourceReference(Shape.FillProperty, SystemColors.MenuTextBrushKey);
 
         base.OnApplyTemplate();
     }

@@ -185,7 +185,7 @@ public class UndertaleSimpleListShort<T> : UndertaleListBase<T> where T : IUnder
 {
     private void EnsureShortCount()
     {
-        if (Count > Int16.MaxValue)
+        if (Count > short.MaxValue)
             throw new InvalidOperationException("Count of short SimpleList exceeds maximum number allowed.");
     }
 
@@ -337,7 +337,6 @@ public class UndertalePointerList<T> : UndertaleListBase<T> where T : IUndertale
                 long skip = pos - reader.AbsPosition;
                 if (skip > 0)
                 {
-                    //Console.WriteLine("Skip " + skip + " bytes of blobs");
                     reader.AbsPosition += skip;
                 }
                 else

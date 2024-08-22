@@ -36,7 +36,7 @@ public partial class UndertaleTexturePageItemEditor : DataUserControl
         {
             Bitmap image = TextureWorker.ReadImageFromFile(dlg.FileName);
             image.SetResolution(96.0F, 96.0F);
-            (this.DataContext as UndertaleTexturePageItem).ReplaceTexture(image);
+            (DataContext as UndertaleTexturePageItem).ReplaceTexture(image);
 
             // Refresh the image of "ItemDisplay"
             if (ItemDisplay.FindName("RenderAreaBorder") is not Border border)
@@ -63,7 +63,7 @@ public partial class UndertaleTexturePageItemEditor : DataUserControl
             TextureWorker worker = new TextureWorker();
             try
             {
-                worker.ExportAsPNG((UndertaleTexturePageItem)this.DataContext, dlg.FileName);
+                worker.ExportAsPNG((UndertaleTexturePageItem)DataContext, dlg.FileName);
             }
             catch (Exception ex)
             {

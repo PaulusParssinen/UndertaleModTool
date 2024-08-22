@@ -24,7 +24,7 @@ public partial class UndertaleSoundEditor : DataUserControl
     public UndertaleSoundEditor()
     {
         InitializeComponent();
-        this.Unloaded += Unload;
+        Unloaded += Unload;
     }
 
     public void Unload(object sender, RoutedEventArgs e)

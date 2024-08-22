@@ -5,7 +5,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // Represents a binary comparison expression.
-    public class ExpressionCompare : Expression
+    public sealed class ExpressionCompare : Expression
     {
         public UndertaleInstruction.ComparisonType Opcode;
         public Expression Argument1;
@@ -13,10 +13,10 @@ public static partial class Decompiler
 
         public ExpressionCompare(UndertaleInstruction.ComparisonType opcode, Expression argument1, Expression argument2)
         {
-            this.Opcode = opcode;
-            this.Type = UndertaleInstruction.DataType.Boolean;
-            this.Argument1 = argument1;
-            this.Argument2 = argument2;
+            Opcode = opcode;
+            Type = UndertaleInstruction.DataType.Boolean;
+            Argument1 = argument1;
+            Argument2 = argument2;
         }
 
         internal override bool IsDuplicationSafe()
@@ -33,12 +33,12 @@ public static partial class Decompiler
             if (Argument2 is ExpressionCompare compare2)
                 arg2 = compare2.ToStringWithParen(context);
 
-            return String.Format("{0} {1} {2}", arg1, OperationToPrintableString(Opcode), arg2);
+            return $"{arg1} {OperationToPrintableString(Opcode)} {arg2}";
         }
 
         public string ToStringWithParen(DecompileContext context)
         {
-            return "(" + ToString(context) + ")";
+            return $"({ToString(context)})";
         }
 
         public override Statement CleanStatement(DecompileContext context, BlockHLStatement block)

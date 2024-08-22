@@ -40,7 +40,7 @@ public static class GitVersion
         }
 
         // return combined commit + branch
-        if (String.IsNullOrWhiteSpace(gitOutput)) gitOutput = "unknownGitCommit";
+        if (string.IsNullOrWhiteSpace(gitOutput)) gitOutput = "unknownGitCommit";
         return gitOutput;
     }
 }

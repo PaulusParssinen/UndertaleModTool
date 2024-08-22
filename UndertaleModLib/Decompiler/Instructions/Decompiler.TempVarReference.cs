@@ -3,7 +3,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // A reference class for tempvars.
-    public class TempVarReference
+    public sealed class TempVarReference
     {
         public TempVar Var;
 

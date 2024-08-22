@@ -5,7 +5,7 @@ namespace UndertaleModLib.Decompiler;
 
 public static partial class Decompiler
 {
-    public class HLSwitchCaseStatement : HLStatement
+    public sealed class HLSwitchCaseStatement : HLStatement
     {
         public List<Expression> CaseExpressions;
         public BlockHLStatement Block;
@@ -13,8 +13,8 @@ public static partial class Decompiler
         public HLSwitchCaseStatement(List<Expression> caseExpressions, BlockHLStatement block)
         {
             DebugUtil.Assert(caseExpressions.Count > 0, "Switch statement lacks any cases.");
-            this.CaseExpressions = caseExpressions;
-            this.Block = block;
+            CaseExpressions = caseExpressions;
+            Block = block;
         }
 
         public override Statement CleanStatement(DecompileContext context, BlockHLStatement block)

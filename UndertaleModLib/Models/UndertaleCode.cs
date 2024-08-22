@@ -9,7 +9,7 @@ namespace UndertaleModLib.Models;
 /// <summary>
 /// A bytecode instruction.
 /// </summary>
-public class UndertaleInstruction : IUndertaleObject
+public sealed class UndertaleInstruction : IUndertaleObject
 {
     /// <summary>
     /// Possible opcodes an instruction can use.
@@ -223,7 +223,7 @@ public class UndertaleInstruction : IUndertaleObject
         int NameStringID { get; set; }
     }
 
-    public class Reference<T> : IUndertaleObject where T : class, IUndertaleObject, ReferencedObject
+    public sealed class Reference<T> : IUndertaleObject where T : class, IUndertaleObject, ReferencedObject
     {
         public uint NextOccurrenceOffset { get; set; } = 0xdead;
         public VariableType Type { get; set; }
@@ -270,15 +270,15 @@ public class UndertaleInstruction : IUndertaleObject
         {
             if (typeof(T) == typeof(UndertaleVariable) && Type != VariableType.Normal)
             {
-                return String.Format("[{0}]{1}{2}", Type.ToString().ToLower(CultureInfo.InvariantCulture), ((Target as UndertaleVariable)?.InstanceType.ToString().ToLower(CultureInfo.InvariantCulture) ?? "null") + ".", Target?.ToString() ?? "(null)");
+                return $"[{Type.ToString().ToLower(CultureInfo.InvariantCulture)}]{((Target as UndertaleVariable)?.InstanceType.ToString().ToLower(CultureInfo.InvariantCulture) ?? "null") + "."}{Target?.ToString() ?? "(null)"}";
             }
             else
-                return String.Format("{0}", Target?.ToString() ?? "(null)");
+                return Target?.ToString() ?? "(null)";
         }
 
         public static Dictionary<T, List<UndertaleInstruction>> CollectReferences(IList<UndertaleCode> codes)
         {
-            Dictionary<T, List<UndertaleInstruction>> list = new Dictionary<T, List<UndertaleInstruction>>();
+            Dictionary<T, List<UndertaleInstruction>> list = new();
             foreach (UndertaleCode code in codes)
             {
                 if (code.ParentEntry != null) // GMS 2.3, skip inner entries

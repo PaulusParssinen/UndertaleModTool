@@ -53,7 +53,7 @@ public struct StringBuilderHelper
     /// <param name="position">The position for this <see cref="StringBuilderHelper"/>.</param>
     public StringBuilderHelper(int position)
     {
-        this.Position = position;
+        Position = position;
     }
 
     /// <summary>
@@ -89,21 +89,21 @@ public struct StringBuilderHelper
     /// </summary>
     /// <param name="sb">An instance on where a string should be appended to.</param>
     /// <param name="value"><inheritdoc cref="StringBuilder.Append(object)"/></param>
-    public void Append(StringBuilder sb, object value) => this.Append(sb, value.ToString());
+    public void Append(StringBuilder sb, object value) => Append(sb, value.ToString());
     
     /// <summary>
     /// <inheritdoc cref="StringBuilderHelper.Append(StringBuilder, string)"/>
     /// </summary>
     /// <param name="sb">An instance on where a string should be appended to.</param>
     /// <param name="value"><inheritdoc cref="StringBuilder.Append(int)"/></param>
-    public void Append(StringBuilder sb, int value) => this.Append(sb, value.ToString());
+    public void Append(StringBuilder sb, int value) => Append(sb, value.ToString());
     
     /// <summary>
     /// <inheritdoc cref="StringBuilderHelper.Append(StringBuilder, string)"/>
     /// </summary>
     /// <param name="sb">An instance on where a string should be appended to.</param>
     /// <param name="value"><inheritdoc cref="StringBuilder.Append(byte)"/></param>
-    public void Append(StringBuilder sb, byte value) => this.Append(sb, value.ToString());
+    public void Append(StringBuilder sb, byte value) => Append(sb, value.ToString());
     
     
     

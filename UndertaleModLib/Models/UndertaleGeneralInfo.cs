@@ -898,7 +898,7 @@ public class UndertaleOptions : IUndertaleObject, IDisposable
     /// <inheritdoc />
     public void Unserialize(UndertaleReader reader)
     {
-        NewFormat = reader.ReadInt32() == Int32.MinValue;
+        NewFormat = reader.ReadInt32() == int.MinValue;
         reader.Position -= 4;
         if (NewFormat)
         {
@@ -964,7 +964,7 @@ public class UndertaleOptions : IUndertaleObject, IDisposable
     public static uint UnserializeChildObjectCount(UndertaleReader reader)
     {
         uint count = 0;
-        bool newFormat = reader.ReadInt32() == Int32.MinValue;
+        bool newFormat = reader.ReadInt32() == int.MinValue;
         reader.Position -= 4;
 
         reader.Position += newFormat ? 60u : 140u;

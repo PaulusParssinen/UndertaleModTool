@@ -120,7 +120,7 @@ public static partial class Decompiler
                 }
 
                 var statements = context.Statements[FunctionBodyEntryBlock.Address.Value];
-                int numNotReturn = statements.FindAll(stmt => !(stmt is ReturnStatement)).Count;
+                int numNotReturn = statements.FindAll(stmt => stmt is not ReturnStatement).Count;
 
                 if (numNotReturn > 0 || Subtype != FunctionType.Struct)
                 {

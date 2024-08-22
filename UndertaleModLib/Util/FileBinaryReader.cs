@@ -17,14 +17,7 @@ public class FileBinaryReader : IBinaryReader
     public long Position
     {
         get => Stream.Position;
-        set
-        {
-#if DEBUG
-            if (value > Length)
-                throw new IOException("Reading out of bounds.");
-#endif
-            Stream.Position = value;
-        }
+        set => Stream.Position = value;
     }
 
     public FileBinaryReader(Stream stream, Encoding encoding = null)
@@ -41,16 +34,12 @@ public class FileBinaryReader : IBinaryReader
 
     private ReadOnlySpan<byte> ReadToBuffer(int count)
     {
-        Stream.Read(buffer, 0, count);
+        Stream.ReadExactly(buffer, 0, count);
         return buffer;
     }
 
     public byte ReadByte()
     {
-#if DEBUG
-        if (Stream.Position + 1 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         return (byte)Stream.ReadByte();
     }
 
@@ -61,10 +50,6 @@ public class FileBinaryReader : IBinaryReader
 
     public string ReadChars(int count)
     {
-#if DEBUG
-        if (Stream.Position + count > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         if (count > 1024)
         {
             byte[] buf = new byte[count];
@@ -83,10 +68,6 @@ public class FileBinaryReader : IBinaryReader
 
     public byte[] ReadBytes(int count)
     {
-#if DEBUG
-        if (Stream.Position + count > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         byte[] val = new byte[count];
         Stream.Read(val, 0, count);
         return val;
@@ -94,127 +75,76 @@ public class FileBinaryReader : IBinaryReader
 
     public short ReadInt16()
     {
-#if DEBUG
-        if (Stream.Position + 2 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         return BinaryPrimitives.ReadInt16LittleEndian(ReadToBuffer(2));
     }
 
     public ushort ReadUInt16()
     {
-#if DEBUG
-        if (Stream.Position + 2 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         return BinaryPrimitives.ReadUInt16LittleEndian(ReadToBuffer(2));
     }
 
     public int ReadInt24()
     {
-#if DEBUG
-        if (Stream.Position + 3 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         ReadToBuffer(3);
         return buffer[0] | buffer[1] << 8 | (sbyte)buffer[2] << 16;
     }
 
     public uint ReadUInt24()
     {
-#if DEBUG
-        if (Stream.Position + 3 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         ReadToBuffer(3);
         return (uint)(buffer[0] | buffer[1] << 8 | buffer[2] << 16);
     }
 
     public int ReadInt32()
     {
-#if DEBUG
-        if (Stream.Position + 4 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         return BinaryPrimitives.ReadInt32LittleEndian(ReadToBuffer(4));
     }
 
     public uint ReadUInt32()
     {
-#if DEBUG
-        if (Stream.Position + 4 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         return BinaryPrimitives.ReadUInt32LittleEndian(ReadToBuffer(4));
     }
 
     public float ReadSingle()
     {
-#if DEBUG
-        if (Stream.Position + 4 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         return BitConverter.Int32BitsToSingle(BinaryPrimitives.ReadInt32LittleEndian(ReadToBuffer(4)));
     }
 
     public double ReadDouble()
     {
-#if DEBUG
-        if (Stream.Position + 8 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
-        return BitConverter.Int64BitsToDouble(BinaryPrimitives.ReadInt64LittleEndian(ReadToBuffer(8)));
+        return BinaryPrimitives.ReadDoubleLittleEndian(ReadToBuffer(8));
     }
 
     public long ReadInt64()
     {
-#if DEBUG
-        if (Stream.Position + 8 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         return BinaryPrimitives.ReadInt64LittleEndian(ReadToBuffer(8));
     }
 
     public ulong ReadUInt64()
     {
-#if DEBUG
-        if (Stream.Position + 8 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         return BinaryPrimitives.ReadUInt64LittleEndian(ReadToBuffer(8));
     }
 
     public string ReadGMString()
     {
-#if DEBUG
-        if (Stream.Position + 5 > _length)
-            throw new IOException("Reading out of bounds");
-#endif
         int length = BinaryPrimitives.ReadInt32LittleEndian(ReadToBuffer(4));
-#if DEBUG
-        if (Stream.Position + length + 1 >= _length)
-            throw new IOException("Reading out of bounds");
-#endif
+
         string res;
         if (length > 1024)
         {
             byte[] buf = new byte[length];
-            Stream.Read(buf, 0, length);
+            Stream.ReadExactly(buf, 0, length);
             res = encoding.GetString(buf);
         }
         else
         {
             Span<byte> buf = stackalloc byte[length];
-            Stream.Read(buf);
+            Stream.ReadExactly(buf);
             res = encoding.GetString(buf);
         }
         
-#if DEBUG
-        if (Stream.ReadByte() != 0)
-            throw new IOException("String not null terminated!");
-#else
+        // assume null-terminator
         Position++;
-#endif
         return res;
     }
     public void SkipGMString()

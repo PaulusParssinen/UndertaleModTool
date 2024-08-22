@@ -12,8 +12,8 @@ public static partial class Decompiler
 
         protected FunctionCall(UndertaleInstruction.DataType returnType, List<Expression> args)
         {
-            this.ReturnType = returnType;
-            this.Arguments = args;
+            ReturnType = returnType;
+            Arguments = args;
         }
 
         internal override bool IsDuplicationSafe()

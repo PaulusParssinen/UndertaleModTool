@@ -95,12 +95,12 @@ public static class Assembler
                         space = line.IndexOf(' ', StringComparison.InvariantCulture);
                         if (space >= 0)
                         {
-                            byte spec = Byte.Parse(line.Substring(space + 1).Trim());
+                            byte spec = byte.Parse(line.Substring(space + 1).Trim());
                             instr.ComparisonKind = (UndertaleInstruction.ComparisonType)(spec | 0x80);
                             line = line.Substring(0, space);
                         }
                     }
-                    instr.Extra = Byte.Parse(line);
+                    instr.Extra = byte.Parse(line);
                     line = "";
                 }
                 break;
@@ -116,7 +116,7 @@ public static class Assembler
             case UndertaleInstruction.InstructionType.GotoInstruction:
                 if (line[0] == '$')
                 {
-                    instr.JumpOffset = Int32.Parse(line.Substring(1));
+                    instr.JumpOffset = int.Parse(line.Substring(1));
                 }
                 else
                 {
@@ -139,7 +139,7 @@ public static class Assembler
                 {
                     // Special scenario - the swap instruction
                     // TODO: Figure out the proper syntax, see #129
-                    instr.SwapExtra = Byte.Parse(line);
+                    instr.SwapExtra = byte.Parse(line);
                 }
                 else
                 {
@@ -154,14 +154,14 @@ public static class Assembler
                 switch (instr.Type1)
                 {
                     case UndertaleInstruction.DataType.Double:
-                        instr.Value = Double.Parse(line, CultureInfo.InvariantCulture);
+                        instr.Value = double.Parse(line, CultureInfo.InvariantCulture);
                         break;
                     case UndertaleInstruction.DataType.Float:
-                        instr.Value = Single.Parse(line, CultureInfo.InvariantCulture);
+                        instr.Value = float.Parse(line, CultureInfo.InvariantCulture);
                         break;
                     case UndertaleInstruction.DataType.Int32:
                         int ival;
-                        if (Int32.TryParse(line, out ival))
+                        if (int.TryParse(line, out ival))
                             instr.Value = ival;
                         else
                         {
@@ -174,7 +174,7 @@ public static class Assembler
                         break;
                     case UndertaleInstruction.DataType.Int64:
                         long lval;
-                        if (Int64.TryParse(line, out lval))
+                        if (long.TryParse(line, out lval))
                             instr.Value = lval;
                         else
                             instr.Value = (long)ParseResourceName(line, data);
@@ -192,7 +192,7 @@ public static class Assembler
                         break;
                     case UndertaleInstruction.DataType.Int16:
                         short sval;
-                        if (Int16.TryParse(line, out sval))
+                        if (short.TryParse(line, out sval))
                             instr.Value = sval;
                         else
                             instr.Value = (short)ParseResourceName(line, data);
@@ -210,7 +210,7 @@ public static class Assembler
                 if (func == null)
                     throw new Exception("Function not found: " + match.Groups[1].Value);
                 instr.Function = new UndertaleInstruction.Reference<UndertaleFunction>() { Target = func };
-                instr.ArgumentsCount = UInt16.Parse(match.Groups[2].Value);
+                instr.ArgumentsCount = ushort.Parse(match.Groups[2].Value);
                 line = "";
                 break;
 
@@ -221,7 +221,7 @@ public static class Assembler
                     if (breakId == -11) // pushref
                     {
                         // Parse additional int argument
-                        if (Int32.TryParse(line, out int intArgument))
+                        if (int.TryParse(line, out int intArgument))
                         {
                             instr.IntArgument = intArgument;
                         }
@@ -236,7 +236,7 @@ public static class Assembler
                     }
                 }
                 else
-                    instr.Value = Int16.Parse(line);
+                    instr.Value = short.Parse(line);
                 line = "";
                 break;
         }
@@ -322,7 +322,7 @@ public static class Assembler
                 {
                     if (aaa.Length >= 4)
                     {
-                        var varii = vars[Int32.Parse(aaa[3])];
+                        var varii = vars[int.Parse(aaa[3])];
                         if (data?.GeneralInfo?.BytecodeVersion >= 15 && varii.InstanceType != UndertaleInstruction.InstanceType.Local)
                             throw new Exception("Not a local var");
                         if (varii.Name.Content != aaa[2])
@@ -370,11 +370,11 @@ public static class Assembler
             if ((at - 1) == str.LastIndexOf('"'))
             {
                 if (str.Substring(at + 1) != "-1") // TODO
-                    id = UInt32.Parse(str.Substring(at + 1));
+                    id = uint.Parse(str.Substring(at + 1));
                 str = str.Substring(0, at);
             }
         }
-        if (!String.IsNullOrEmpty(str))
+        if (!string.IsNullOrEmpty(str))
         {
             if (str[0] != '"' || str[str.Length - 1] != '"')
                 throw new Exception("Bad string format");
@@ -414,7 +414,7 @@ public static class Assembler
             if (inst != null)
             {
                 short instnum;
-                if (Int16.TryParse(inst, out instnum))
+                if (short.TryParse(inst, out instnum))
                 {
                     instance = (UndertaleInstruction.InstanceType)instnum;
                 }

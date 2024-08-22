@@ -5,7 +5,7 @@ namespace UndertaleModLib.Decompiler;
 
 public static partial class Decompiler
 {
-    public class IfHLStatement : HLStatement
+    public sealed class IfHLStatement : HLStatement
     {
         public Expression condition;
         public BlockHLStatement trueBlock;

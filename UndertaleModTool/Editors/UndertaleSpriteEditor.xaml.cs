@@ -68,7 +68,7 @@ public partial class UndertaleSpriteEditor : DataUserControl
 
     private void ExportAll_Click(object sender, RoutedEventArgs e)
     {
-        UndertaleSprite sprite = this.DataContext as UndertaleSprite;
+        UndertaleSprite sprite = DataContext as UndertaleSprite;
 
         SaveFileDialog dlg = new SaveFileDialog();
 
@@ -140,12 +140,12 @@ public partial class UndertaleSpriteEditor : DataUserControl
 
     private void MaskList_AddingNewItem(object sender, AddingNewItemEventArgs e)
     {
-        e.NewItem = (this.DataContext as UndertaleSprite).NewMaskEntry();
+        e.NewItem = (DataContext as UndertaleSprite).NewMaskEntry();
     }
 
     private void MaskImport_Click(object sender, RoutedEventArgs e)
     {
-        UndertaleSprite sprite = this.DataContext as UndertaleSprite;
+        UndertaleSprite sprite = DataContext as UndertaleSprite;
         UndertaleSprite.MaskEntry target = (sender as Button).DataContext as UndertaleSprite.MaskEntry;
 
         OpenFileDialog dlg = new OpenFileDialog();
@@ -170,7 +170,7 @@ public partial class UndertaleSpriteEditor : DataUserControl
 
     private void MaskExport_Click(object sender, RoutedEventArgs e)
     {
-        UndertaleSprite sprite = this.DataContext as UndertaleSprite;
+        UndertaleSprite sprite = DataContext as UndertaleSprite;
         UndertaleSprite.MaskEntry target = (sender as Button).DataContext as UndertaleSprite.MaskEntry;
 
         SaveFileDialog dlg = new SaveFileDialog();

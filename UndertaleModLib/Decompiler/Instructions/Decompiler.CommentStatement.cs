@@ -5,7 +5,7 @@ public static partial class Decompiler
     /// <summary>
     /// Represents a code comment, for debugging use (or minor error reporting). 
     /// </summary>
-    public class CommentStatement : Statement
+    public sealed class CommentStatement : Statement
     {
         /// <summary>
         /// The code comment.

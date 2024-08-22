@@ -4,10 +4,10 @@ using System.Text;
 namespace UndertaleModLib.Util;
 
 // Initial implementation was based on DogScepter's implementation
-public class BufferBinaryReader : IBinaryReader
+public sealed class BufferBinaryReader : IBinaryReader
 {
     // A faster implementation of "MemoryStream"
-    private class ChunkBuffer
+    private sealed class ChunkBuffer
     {
         private readonly byte[] _buffer;
 
@@ -164,7 +164,7 @@ public class BufferBinaryReader : IBinaryReader
         return chunkBuffer.ReadByte();
     }
 
-    public virtual bool ReadBoolean()
+    public bool ReadBoolean()
     {
         return ReadByte() != 0;
     }
@@ -240,12 +240,12 @@ public class BufferBinaryReader : IBinaryReader
 
     public float ReadSingle()
     {
-        return BitConverter.Int32BitsToSingle(BinaryPrimitives.ReadInt32LittleEndian(ReadToBuffer(4)));
+        return BinaryPrimitives.ReadSingleLittleEndian(ReadToBuffer(4));
     }
 
     public double ReadDouble()
     {
-        return BitConverter.Int64BitsToDouble(BinaryPrimitives.ReadInt64LittleEndian(ReadToBuffer(8)));
+        return BinaryPrimitives.ReadDoubleLittleEndian(ReadToBuffer(8));
     }
 
     public long ReadInt64()

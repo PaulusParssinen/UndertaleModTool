@@ -2,14 +2,14 @@ namespace UndertaleModLib.Decompiler;
 
 public static partial class Decompiler
 {
-    public class WithHLStatement : HLStatement
+    public sealed class WithHLStatement : HLStatement
     {
         public Expression NewEnv;
         public BlockHLStatement Block;
 
         public override string ToString(DecompileContext context)
         {
-            return "with (" + NewEnv.ToString(context) + ")\n" + context.Indentation + Block.ToString(context);
+            return $"with ({NewEnv.ToString(context)})\n{context.Indentation}{Block.ToString(context)}";
         }
 
         public override Statement CleanStatement(DecompileContext context, BlockHLStatement block)

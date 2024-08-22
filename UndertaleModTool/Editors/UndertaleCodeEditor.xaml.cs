@@ -80,7 +80,7 @@ public partial class UndertaleCodeEditor : DataUserControl
         DecompiledSearchPanel.LostFocus += SearchPanel_LostFocus;
         DecompiledSearchPanel.MarkerBrush = new SolidColorBrush(Color.FromRgb(90, 90, 90));
 
-        using (Stream stream = this.GetType().Assembly.GetManifestResourceStream("UndertaleModTool.Resources.GML.xshd"))
+        using (Stream stream = GetType().Assembly.GetManifestResourceStream("UndertaleModTool.Resources.GML.xshd"))
         {
             using (XmlTextReader reader = new XmlTextReader(stream))
             {
@@ -161,7 +161,7 @@ public partial class UndertaleCodeEditor : DataUserControl
         DisassemblySearchPanel.LostFocus += SearchPanel_LostFocus;
         DisassemblySearchPanel.MarkerBrush = new SolidColorBrush(Color.FromRgb(90, 90, 90));
 
-        using (Stream stream = this.GetType().Assembly.GetManifestResourceStream("UndertaleModTool.Resources.VMASM.xshd"))
+        using (Stream stream = GetType().Assembly.GetManifestResourceStream("UndertaleModTool.Resources.VMASM.xshd"))
         {
             using (XmlTextReader reader = new XmlTextReader(stream))
             {
@@ -247,7 +247,7 @@ public partial class UndertaleCodeEditor : DataUserControl
 
     private async void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        UndertaleCode code = this.DataContext as UndertaleCode;
+        UndertaleCode code = DataContext as UndertaleCode;
         Directory.CreateDirectory(MainPath);
         Directory.CreateDirectory(TempPath);
         if (code == null)
@@ -271,7 +271,7 @@ public partial class UndertaleCodeEditor : DataUserControl
 
     private async void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
-        UndertaleCode code = this.DataContext as UndertaleCode;
+        UndertaleCode code = DataContext as UndertaleCode;
         if (code == null)
             return;
 
@@ -526,7 +526,7 @@ public partial class UndertaleCodeEditor : DataUserControl
                 DisassemblyEditor.IsReadOnly = true;
 
                 string exStr = ex.ToString();
-                exStr = String.Join("\n;", exStr.Split('\n'));
+                exStr = string.Join("\n;", exStr.Split('\n'));
                 text = $";  EXCEPTION!\n;   {exStr}\n";
             }
         }
@@ -855,7 +855,7 @@ public partial class UndertaleCodeEditor : DataUserControl
             DecompiledSkipped = false;
         }
         else
-            code = this.DataContext as UndertaleCode;
+            code = DataContext as UndertaleCode;
 
         if (code == null)
         {
@@ -1003,7 +1003,7 @@ public partial class UndertaleCodeEditor : DataUserControl
             DisassemblySkipped = false;
         }
         else
-            code = this.DataContext as UndertaleCode;
+            code = DataContext as UndertaleCode;
 
         if (code == null)
         {

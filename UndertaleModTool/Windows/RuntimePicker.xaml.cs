@@ -23,7 +23,7 @@ public partial class RuntimePicker : Window
 
     public RuntimePicker()
     {
-        this.DataContext = this;
+        DataContext = this;
         InitializeComponent();
     }
     private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -55,7 +55,7 @@ public partial class RuntimePicker : Window
         if (gameExeName == null)
             return;
 
-        string gameExePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(dataFilePath), gameExeName + ".exe");
+        string gameExePath = Path.Combine(Path.GetDirectoryName(dataFilePath), gameExeName + ".exe");
         if (!File.Exists(gameExePath))
             return;
 
@@ -64,11 +64,11 @@ public partial class RuntimePicker : Window
 
     private void DiscoverGMS1()
     {
-        string studioRunner = System.IO.Path.Combine(Environment.ExpandEnvironmentVariables(SettingsWindow.GameMakerStudioPath), "Runner.exe");
+        string studioRunner = Path.Combine(Environment.ExpandEnvironmentVariables(SettingsWindow.GameMakerStudioPath), "Runner.exe");
         if (!File.Exists(studioRunner))
             return;
 
-        string studioDebugger = System.IO.Path.Combine(Environment.ExpandEnvironmentVariables(SettingsWindow.GameMakerStudioPath), @"GMDebug\GMDebug.exe");
+        string studioDebugger = Path.Combine(Environment.ExpandEnvironmentVariables(SettingsWindow.GameMakerStudioPath), @"GMDebug\GMDebug.exe");
         if (!File.Exists(studioDebugger))
             studioDebugger = null;
 
@@ -84,12 +84,12 @@ public partial class RuntimePicker : Window
         Regex runtimePattern = new Regex(@"^runtime-(.*)$");
         foreach(var runtimePath in Directory.EnumerateDirectories(runtimesPath))
         {
-            Match m = runtimePattern.Match(System.IO.Path.GetFileName(runtimePath));
+            Match m = runtimePattern.Match(Path.GetFileName(runtimePath));
             if (!m.Success)
                 continue;
 
-            string runtimeRunner = System.IO.Path.Combine(runtimePath, @"windows\Runner.exe");
-            string runtimeRunnerX64 = System.IO.Path.Combine(runtimePath, @"windows\x64\Runner.exe");
+            string runtimeRunner = Path.Combine(runtimePath, @"windows\Runner.exe");
+            string runtimeRunnerX64 = Path.Combine(runtimePath, @"windows\x64\Runner.exe");
             if (Environment.Is64BitOperatingSystem && File.Exists(runtimeRunnerX64))
                 runtimeRunner = runtimeRunnerX64;
             if (!File.Exists(runtimeRunner))

@@ -220,7 +220,7 @@ public static partial class Compiler
                 Token.Location = copyFrom.Location;
                 if (Token.Content != null)
                     Text = Token.Content;
-                this.ID = id;
+                ID = id;
                 Children = new List<Statement>();
             }
 
@@ -233,7 +233,7 @@ public static partial class Compiler
                 Token.Location = copyFrom.Location;
                 if (Token.Content != null)
                     Text = Token.Content;
-                this.Constant = constant;
+                Constant = constant;
                 Children = new List<Statement>();
             }
         }
@@ -402,7 +402,7 @@ public static partial class Compiler
         {
             if (context != null)
             {
-                if (msg.EndsWith(".", StringComparison.InvariantCulture))
+                if (msg.EndsWith('.'))
                     msg = msg.Remove(msg.Length - 1);
 
                 if (context.Location != null)

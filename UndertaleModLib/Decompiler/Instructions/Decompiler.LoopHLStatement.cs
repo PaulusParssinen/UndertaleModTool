@@ -4,7 +4,7 @@ namespace UndertaleModLib.Decompiler;
 
 public static partial class Decompiler
 {
-    public class LoopHLStatement : HLStatement
+    public sealed class LoopHLStatement : HLStatement
     {
         // Loop block
         public BlockHLStatement Block;
@@ -115,13 +115,20 @@ public static partial class Decompiler
             if (IsRepeatLoop)
             {
                 bool needsParen = RepeatStartValue is ExpressionConstant || RepeatStartValue is ExpressionCompare;
-                return "repeat " + (needsParen ? "(" : "") + RepeatStartValue.ToString(context) + (needsParen ? ")" : "") + "\n" + context.Indentation + Block.ToString(context);
+                if (needsParen)
+                {
+                    return "repeat (" + RepeatStartValue.ToString(context) + ")\n" + context.Indentation + Block.ToString(context);
+                }
+                else
+                {
+                    return "repeat " + RepeatStartValue.ToString(context) + "\n" + context.Indentation + Block.ToString(context);
+                }
             }
 
             if (IsForLoop)
             {
                 string conditionStr = Condition.ToString(context); // Cut off parenthesis for the condition.
-                if (conditionStr.StartsWith("(", StringComparison.InvariantCulture) && conditionStr.EndsWith(")", StringComparison.InvariantCulture))
+                if (conditionStr.StartsWith('(') && conditionStr.EndsWith(')'))
                     conditionStr = conditionStr.Substring(1, conditionStr.Length - 2);
 
                 return "for (" + InitializeStatement.ToString(context) + "; " + conditionStr + "; " + StepStatement.ToString(context) + ")\n" + context.Indentation + Block.ToString(context);

@@ -228,7 +228,7 @@ public class UndertaleFont : IUndertaleNamedResource, IDisposable
             /// <returns>The copy.</returns>
             public GlyphKerning Clone()
             {
-                return new GlyphKerning() { ShiftModifier = this.ShiftModifier, Character = this.Character };
+                return new GlyphKerning() { ShiftModifier = ShiftModifier, Character = Character };
             }
         }
 
@@ -244,13 +244,13 @@ public class UndertaleFont : IUndertaleNamedResource, IDisposable
 
             return new Glyph()
             {
-                Character = this.Character,
-                SourceX = this.SourceX,
-                SourceY = this.SourceY,
-                SourceWidth = this.SourceWidth,
-                SourceHeight = this.SourceHeight,
-                Shift = this.Shift,
-                Offset = this.Offset,
+                Character = Character,
+                SourceX = SourceX,
+                SourceY = SourceY,
+                SourceWidth = SourceWidth,
+                SourceHeight = SourceHeight,
+                Shift = Shift,
+                Offset = Offset,
                 Kerning = kerning
             };
         }

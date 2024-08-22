@@ -51,12 +51,10 @@ public class DecompileContext
         }
     }
 
-    #region Struct management
     public List<Decompiler.Expression> ArgumentReplacements;
     public bool DecompilingStruct;
-    #endregion
 
-    #region Indentation management
+
     public const string Indent = "    ";
     private int _indentationLevel = 0;
     private string _indentation = "";
@@ -80,9 +78,7 @@ public class DecompileContext
         }
     }
     public string Indentation => _indentation;
-    #endregion
 
-    #region Temp var management
     /// <summary>
     /// Maps a temp var to a place where it was created
     /// </summary>
@@ -97,37 +93,30 @@ public class DecompileContext
     {
         return new Decompiler.TempVar(++TempVarId);
     }
-    #endregion
 
-    #region Local var management
     public HashSet<string> LocalVarDefines = new HashSet<string>();
-    #endregion
 
-    #region GMS 2.3+ Function management
+
+    // GMS 2.3+ Function management
     /// <summary>
     /// Set containing already-decompiled child code entries.
     /// Used to prevent decompiling the same child entry multiple times.
     /// Only applies to function entries, struct and constructors are unaffected.
     /// </summary>
     public ISet<UndertaleCode> AlreadyProcessed = new HashSet<UndertaleCode>();
-    #endregion
-
-    #region Asset type resolution
+    
     /// <summary>
     /// Contains the resolved asset type for every variable
     /// </summary>
     public Dictionary<UndertaleVariable, AssetIDType> assetTypes = new Dictionary<UndertaleVariable, AssetIDType>();
     public Decompiler.DirectFunctionCall currentFunction; // TODO: clean up this hack
-    #endregion
-
-    #region Decompilation results
+   
     /// <summary>
     /// Contains the result of decompiling this code block.
     /// This is a map from an entry point address to a list of statements.
     /// Needs to be here to access it in ToString for inline function definitions.
     /// </summary>
     public Dictionary<uint, List<Decompiler.Statement>> Statements { get; internal set; }
-    #endregion
 
     /// <summary>
     /// Allows to disable the anonymous code name resolution to prevent recursion

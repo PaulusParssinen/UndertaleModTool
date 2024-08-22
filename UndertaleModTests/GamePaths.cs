@@ -32,7 +32,7 @@ public abstract class GameTestBase
     public GameTestBase(string path, string md5)
     {
         this.path = path;
-        this.expectedMD5 = md5;
+        expectedMD5 = md5;
     }
 
     [TestInitialize]

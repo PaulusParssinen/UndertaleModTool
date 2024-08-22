@@ -4,7 +4,7 @@ namespace UndertaleModLib.Decompiler;
 
 public static partial class Decompiler
 {
-    public class BlockHLStatement : HLStatement
+    public sealed class BlockHLStatement : HLStatement
     {
         public List<Statement> Statements = new List<Statement>();
 

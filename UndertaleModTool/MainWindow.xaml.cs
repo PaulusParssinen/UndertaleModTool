@@ -219,7 +219,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterfa
     public MainWindow()
     {
         InitializeComponent();
-        this.DataContext = this;
+        DataContext = this;
 
         Highlighted = new DescriptionView("Welcome to UndertaleModTool!", "Open a data.win file to get started, then double click on the items on the left to view them.");
         OpenInTab(Highlighted);
@@ -251,7 +251,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterfa
 
     private void SetIDString(string str)
     {
-        ((Label)this.FindName("ObjectLabel")).Content = str;
+        ((Label)FindName("ObjectLabel")).Content = str;
     }
 
     [DllImport("shell32.dll")]
@@ -510,7 +510,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterfa
                 throw new Exception("ummmmm");
             if (thingToOpen[0] != "AUDO") // Just pretend I'm not hacking it together that poorly
                 throw new Exception("errrrr");
-            OpenInTab(Data.EmbeddedAudio[Int32.Parse(thingToOpen[1])], false, "Embedded Audio");
+            OpenInTab(Data.EmbeddedAudio[int.Parse(thingToOpen[1])], false, "Embedded Audio");
             Activate();
         }
     }
@@ -617,7 +617,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterfa
             if (this.ShowQuestion("Warning: you currently have a project open.\nAre you sure you want to make a new project?") == MessageBoxResult.No)
                 return false;
         }
-        this.Dispatcher.Invoke(() =>
+        Dispatcher.Invoke(() =>
         {
             CommandBox.Text = "";
         });
@@ -917,7 +917,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterfa
     {
         LoaderDialog dialog = new LoaderDialog("Loading", "Loading, please wait...");
         dialog.PreventClose = preventClose;
-        this.Dispatcher.Invoke(() =>
+        Dispatcher.Invoke(() =>
         {
             CommandBox.Text = "";
         });
@@ -1676,7 +1676,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterfa
         IUndertaleObject sourceItem = e.Data.GetData(e.Data.GetFormats()[e.Data.GetFormats().Length - 1]) as IUndertaleObject;
 
 #if DEBUG
-        Debug.WriteLine("Format(s) of dropped TreeViewItem - " + String.Join(", ", e.Data.GetFormats()));
+        Debug.WriteLine("Format(s) of dropped TreeViewItem - " + string.Join(", ", e.Data.GetFormats()));
 #endif
 
         TreeViewItem targetTreeItem = VisualUpwardSearch<TreeViewItem>(e.OriginalSource as UIElement);
@@ -1741,7 +1741,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterfa
     {
         foreach (childItem child in FindVisualChildren<childItem>(obj))
         {
-            if (!String.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name))
             {
                 if (child.Name == name)
                     return child;
@@ -2287,8 +2287,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterfa
 
     public void EnableUI()
     {
-        if (!this.IsEnabled)
-            this.IsEnabled = true;
+        if (!IsEnabled)
+            IsEnabled = true;
     }
 
     public void SyncBinding(string resourceType, bool enable)
@@ -2631,12 +2631,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterfa
         ScriptErrorMessage = "";
         ScriptErrorType = "";
         InitializeScriptDialog();
-        this.IsEnabled = false; // Prevent interaction while the script is running.
+        IsEnabled = false; // Prevent interaction while the script is running.
 
         await RunScriptNow(path); // Runs the script now.
         HideProgressBar(); // Hide the progress bar.
         scriptDialog = null;
-        this.IsEnabled = true; // Allow interaction again.
+        IsEnabled = true; // Allow interaction again.
     }
 
     private async Task RunScriptNow(string path)
@@ -2743,14 +2743,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged, IScriptInterfa
 
     public void SetUMTConsoleText(string message)
     {
-        this.Dispatcher.Invoke(() =>
+        Dispatcher.Invoke(() =>
         {
             CommandBox.Text = message;
         });
     }
     public void SetFinishedMessage(bool isFinishedMessageEnabled)
     {
-        this.Dispatcher.Invoke(() =>
+        Dispatcher.Invoke(() =>
         {
             FinishedMessageEnabled = isFinishedMessageEnabled;
         });
@@ -3227,7 +3227,7 @@ result in loss of work.");
                 ScriptError("Null game executable name or location");
                 return;
             }
-            string gameExePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(FilePath), gameExeName + ".exe");
+            string gameExePath = Path.Combine(Path.GetDirectoryName(FilePath), gameExeName + ".exe");
             if (!File.Exists(gameExePath))
             {
                 ScriptError("Cannot find game executable path, expected: " + gameExePath);
@@ -4002,9 +4002,9 @@ public class GeneralInfoEditor
 
     public GeneralInfoEditor(UndertaleGeneralInfo generalInfo, UndertaleOptions options, UndertaleLanguage language)
     {
-        this.GeneralInfo = generalInfo;
-        this.Options = options;
-        this.Language = language;
+        GeneralInfo = generalInfo;
+        Options = options;
+        Language = language;
     }
 }
 
@@ -4014,7 +4014,7 @@ public class GlobalInitEditor
 
     public GlobalInitEditor(IList<UndertaleGlobalInit> globalInits)
     {
-        this.GlobalInits = globalInits;
+        GlobalInits = globalInits;
     }
 }
 

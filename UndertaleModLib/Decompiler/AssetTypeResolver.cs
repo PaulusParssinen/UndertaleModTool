@@ -518,7 +518,7 @@ public class AssetTypeResolver
 
     public static int? FindConstValue(string const_name)
     {
-        if (const_name.Length >= 1 && Char.IsDigit(const_name[0]))
+        if (const_name.Length >= 1 && char.IsDigit(const_name[0]))
             return null; // that is not a constant
         if (const_name.Length >= 1 && const_name[0] == '-')
             return null; // that is not a constant either

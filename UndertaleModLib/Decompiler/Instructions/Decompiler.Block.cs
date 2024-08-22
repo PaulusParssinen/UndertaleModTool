@@ -7,7 +7,7 @@ public static partial class Decompiler
     /// <summary>
     /// Represents a block node of instructions from GML bytecode (for control flow). 
     /// </summary>
-    public class Block
+    public sealed class Block
     {
         public uint? Address;
         public List<UndertaleInstruction> Instructions = new List<UndertaleInstruction>();
@@ -26,9 +26,6 @@ public static partial class Decompiler
             Address = address;
         }
 
-        public override string ToString()
-        {
-            return "Block " + Address;
-        }
+        public override string ToString() => "Block " + Address;
     }
 }

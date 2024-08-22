@@ -84,7 +84,7 @@ public partial class UndertaleExtensionEditor : DataUserControl
                 break;
             
             case OptionKind.Number:
-                if (!Double.TryParse(option.Value.Content, NumberStyles.Any, CultureInfo.InvariantCulture, out double _))
+                if (!double.TryParse(option.Value.Content, NumberStyles.Any, CultureInfo.InvariantCulture, out double _))
                     option.Value.Content = "0";
                 break;
         };
@@ -125,7 +125,7 @@ public class OptionValueConverter : IValueConverter
                 return str.ToLowerInvariant() == "true";
             
             case "number":
-                if (Double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out double _))
+                if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out double _))
                     return str;
                 return "0";
             
@@ -147,7 +147,7 @@ public class OptionValueConverter : IValueConverter
                 return (b ? "True" : "False");
             
             case "number":
-                if (value is string s && Double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out double _))
+                if (value is string s && double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out double _))
                     return s;
                 return new ValidationResult(false, "Invalid number string");
             

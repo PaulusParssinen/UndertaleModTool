@@ -391,7 +391,7 @@ public static partial class Decompiler
                                             if (v.Var == target.Var && v.InstType == target.InstType &&
                                                 ((v.ArrayIndices == null && target.ArrayIndices == null) ||
                                                   v.ArrayIndices?.SequenceEqual(target.ArrayIndices) == true) && // even if null
-                                                (!(two.Argument2 is ExpressionConstant) || // Also check to make sure it's not a ++ or --
+                                                (two.Argument2 is not ExpressionConstant || // Also check to make sure it's not a ++ or --
                                                 (!((two.Argument2 as ExpressionConstant).IsPushE && ExpressionConstant.ConvertToInt((two.Argument2 as ExpressionConstant).Value) == 1))))
                                             {
                                                 if (!(context.GlobalContext.Data?.GeneralInfo?.BytecodeVersion > 14 && v.Opcode != UndertaleInstruction.Opcode.Push && instr.Destination.Target.InstanceType != UndertaleInstruction.InstanceType.Self))
@@ -741,7 +741,7 @@ public static partial class Decompiler
             if (i < tempvars.Count)
             {
                 Expression val = stack.Pop();
-                if (!(val is ExpressionTempVar) || (val as ExpressionTempVar).Var != tempvars[i]) {
+                if (val is not ExpressionTempVar || (val as ExpressionTempVar).Var != tempvars[i]) {
                     var assignment = new TempVarAssignmentStatement(tempvars[i], val);
                     statements.Add(assignment);
 
@@ -1140,7 +1140,7 @@ public static partial class Decompiler
             for (int i = 0; i < block.Statements.Count; i++)
             {
                 Statement stmt = block.Statements[i];
-                if (!(stmt is PushEnvStatement) && !(stmt is PopEnvStatement))
+                if (stmt is not PushEnvStatement && stmt is not PopEnvStatement)
                     output.Statements.Add(stmt);
             }
 
@@ -1166,8 +1166,8 @@ public static partial class Decompiler
                     {
                         ExpressionCompare cmp = (ExpressionCompare)block.ConditionStatement;
                         if (cmp.Argument1 != switchExpression &&
-                            (!(cmp.Argument1 is ExpressionTempVar) || !(switchExpression is ExpressionTempVar) || (cmp.Argument1 as ExpressionTempVar).Var.Var != (switchExpression as ExpressionTempVar).Var.Var) &&
-                            (!(cmp.Argument1 is ExpressionTempVar) || (cmp.Argument1 as ExpressionTempVar).Var.Var != switchTempVar))
+                            (cmp.Argument1 is not ExpressionTempVar || switchExpression is not ExpressionTempVar || (cmp.Argument1 as ExpressionTempVar).Var.Var != (switchExpression as ExpressionTempVar).Var.Var) &&
+                            (cmp.Argument1 is not ExpressionTempVar || (cmp.Argument1 as ExpressionTempVar).Var.Var != switchTempVar))
                             throw new Exception("Malformed switch statement: bad condition var (" + cmp.Argument1.ToString(context) + ")");
                         if (cmp.Opcode != UndertaleInstruction.ComparisonType.EQ)
                             throw new Exception("Malformed switch statement: bad contition type (" + cmp.Opcode.ToString().ToUpper(CultureInfo.InvariantCulture) + ")");
@@ -1567,7 +1567,7 @@ public static partial class Decompiler
         {
             throw new TimeoutException("The building cache process hung.\n" +
                                        "The function code entries that didn't manage to decompile:\n" +
-                                       String.Join('\n', processingCodeList.Keys) + "\n\n" +
+                                       string.Join('\n', processingCodeList.Keys) + "\n\n" +
                                        "You should save the game data (if it's necessary) and re-open the app.\n");
         }
     }

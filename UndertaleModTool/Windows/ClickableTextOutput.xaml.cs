@@ -32,7 +32,7 @@ public partial class ClickableTextOutput : Window
         Query = query;
         ResultsCount = resultsCount;
         this.resultsDict = resultsDict.ToDictionary(x => x.Key, x => x.Value);
-        this.editorTab = editorDecompile ? CodeEditorTab.Decompiled : CodeEditorTab.Disassembly;
+        editorTab = editorDecompile ? CodeEditorTab.Decompiled : CodeEditorTab.Disassembly;
         this.failedList = failedList?.ToList();
         #pragma warning restore CA1416
     }
@@ -47,7 +47,7 @@ public partial class ClickableTextOutput : Window
         Query = query;
         ResultsCount = resultsCount;
         this.resultsDict = resultsDict;
-        this.editorTab = editorDecompile ? CodeEditorTab.Decompiled : CodeEditorTab.Disassembly;
+        editorTab = editorDecompile ? CodeEditorTab.Decompiled : CodeEditorTab.Disassembly;
         this.failedList = failedList;
         #pragma warning restore CA1416
     }
@@ -211,19 +211,19 @@ public partial class ClickableTextOutput : Window
         if (mainWindow is null)
             return;
         if (e.OriginalSource is not Run linkRun || linkRun.Parent is not Hyperlink
-            || String.IsNullOrEmpty(linkRun.Text))
+            || string.IsNullOrEmpty(linkRun.Text))
             return;
 
         if (linkRun.Text.StartsWith("Line "))
         {
-            if (!Int32.TryParse(linkRun.Text[5..], out int lineNum))
+            if (!int.TryParse(linkRun.Text[5..], out int lineNum))
             {
                 e.Handled = true;
                 return;
             }
 
             string codeName = linkRun.Tag as string;
-            if (String.IsNullOrEmpty(codeName))
+            if (string.IsNullOrEmpty(codeName))
             {
                 e.Handled = true;
                 return;
@@ -254,7 +254,7 @@ public partial class ClickableTextOutput : Window
     private void OpenInNewTabItem_Click(object sender, RoutedEventArgs e)
     {
         if ((sender as FrameworkElement)?.DataContext is not ValueTuple<int, string> codeNamePair
-            || String.IsNullOrEmpty(codeNamePair.Item2))
+            || string.IsNullOrEmpty(codeNamePair.Item2))
             return;
 
         mainWindow.OpenCodeEntry(codeNamePair.Item2, codeNamePair.Item1, editorTab, true);

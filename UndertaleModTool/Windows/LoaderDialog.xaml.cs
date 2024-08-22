@@ -45,7 +45,7 @@ public partial class LoaderDialog : Window
         Message = msg;
 
         InitializeComponent();
-        this.DataContext = this;
+        DataContext = this;
 
         (Application.Current.MainWindow as MainWindow).FileMessageEvent += ReportProgress;
     }
@@ -60,7 +60,7 @@ public partial class LoaderDialog : Window
 
     protected override void OnClosing(CancelEventArgs e)
     {
-        e.Cancel = this.PreventClose;
+        e.Cancel = PreventClose;
     }
 
     protected override void OnClosed(EventArgs e)
@@ -77,7 +77,7 @@ public partial class LoaderDialog : Window
             {
                 if (IsVisible)
                 {
-                    this.PreventClose = false;
+                    PreventClose = false;
                     Hide();
                 }
             }
@@ -133,7 +133,7 @@ public partial class LoaderDialog : Window
     {
         try
         {
-            ReportProgress(value + "/" + Maximum + (!String.IsNullOrEmpty(SavedStatusText) ? ": " + SavedStatusText : ""));
+            ReportProgress(value + "/" + Maximum + (!string.IsNullOrEmpty(SavedStatusText) ? ": " + SavedStatusText : ""));
             UpdateValue(value);
         }
         catch
@@ -153,7 +153,7 @@ public partial class LoaderDialog : Window
         {
             try
             {
-                ReportProgress(value + "/" + Maximum + (!String.IsNullOrEmpty(status) ? ": " + status : "")); //update status
+                ReportProgress(value + "/" + Maximum + (!string.IsNullOrEmpty(status) ? ": " + status : "")); //update status
                 UpdateValue(value);
             }
             catch

@@ -30,7 +30,7 @@ public partial class TextInputDialog : Window
         InputText = defaultInputBoxText;
 
         InitializeComponent();
-        this.DataContext = this;
+        DataContext = this;
     }
     private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
@@ -43,7 +43,7 @@ public partial class TextInputDialog : Window
 
     protected override void OnClosing(CancelEventArgs e)
     {
-        e.Cancel = this.PreventClose;
+        e.Cancel = PreventClose;
     }
 
     public void TryHide()
@@ -52,7 +52,7 @@ public partial class TextInputDialog : Window
         {
             if (IsVisible)
             {
-                this.PreventClose = false;
+                PreventClose = false;
                 Hide();
             }
         });
@@ -60,13 +60,13 @@ public partial class TextInputDialog : Window
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-        this.PreventClose = false;
-        this.DialogResult = true;
-        this.Close();
+        PreventClose = false;
+        DialogResult = true;
+        Close();
     }
 
     private void CancelButton_Click(object sender, RoutedEventArgs e)
     {
-        this.Close();
+        Close();
     }
 }

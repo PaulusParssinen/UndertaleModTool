@@ -240,7 +240,7 @@ public static partial class Compiler
             return context;
         }
 
-        CodeWriter codeWriter = AssemblyWriter.AssembleStatement(context, optimizedBlock); // Write assembly code
+        CodeWriter codeWriter = AssembleStatement(context, optimizedBlock); // Write assembly code
         context.ResultAssembly = codeWriter.Finish();
 
         if (codeWriter.ErrorMessages.Count > 0)

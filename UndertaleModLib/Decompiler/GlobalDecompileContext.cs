@@ -6,7 +6,7 @@ namespace UndertaleModLib.Decompiler;
 /// The DecompileContext is global for the entire decompilation run, or possibly multiple runs. It caches the decompilation results which don't change often
 /// to speedup decompilation.
 /// </summary>
-public class GlobalDecompileContext
+public sealed class GlobalDecompileContext
 {
     public UndertaleData Data;
 
@@ -30,8 +30,8 @@ public class GlobalDecompileContext
 
     public GlobalDecompileContext(UndertaleData data, bool enableStringLabels)
     {
-        this.Data = data;
-        this.EnableStringLabels = enableStringLabels;
+        Data = data;
+        EnableStringLabels = enableStringLabels;
     }
 
     public void ClearDecompilationCache()

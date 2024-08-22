@@ -4,15 +4,15 @@ namespace UndertaleModLib.Decompiler;
 
 public static partial class Decompiler
 {
-    public class HLSwitchStatement : HLStatement
+    public sealed class HLSwitchStatement : HLStatement
     {
         private Expression SwitchExpression;
         private List<HLSwitchCaseStatement> Cases;
 
         public HLSwitchStatement(Expression switchExpression, List<HLSwitchCaseStatement> cases)
         {
-            this.SwitchExpression = switchExpression;
-            this.Cases = cases;
+            SwitchExpression = switchExpression;
+            Cases = cases;
         }
 
         public override Statement CleanStatement(DecompileContext context, BlockHLStatement block)

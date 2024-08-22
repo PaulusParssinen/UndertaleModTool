@@ -5,7 +5,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // This is basically ExpressionTwo, but allows for using symbols like && or || without creating new opcodes.
-    public class ExpressionTwoSymbol : Expression
+    public sealed class ExpressionTwoSymbol : Expression
     {
         public string Symbol;
         public Expression Argument1;
@@ -13,10 +13,10 @@ public static partial class Decompiler
 
         public ExpressionTwoSymbol(string symbol, UndertaleInstruction.DataType targetType, Expression argument1, Expression argument2)
         {
-            this.Symbol = symbol;
-            this.Type = targetType;
-            this.Argument1 = argument1;
-            this.Argument2 = argument2;
+            Symbol = symbol;
+            Type = targetType;
+            Argument1 = argument1;
+            Argument2 = argument2;
         }
 
         internal override bool IsDuplicationSafe()
@@ -43,7 +43,7 @@ public static partial class Decompiler
                 arg2 = (Argument2 as ExpressionTwoSymbol).ToStringNoParen(context);
             else
                 arg2 = Argument2.ToString(context);
-            return String.Format("({0} {1} {2})", arg1, Symbol, arg2);
+            return string.Format("({0} {1} {2})", arg1, Symbol, arg2);
         }
 
         public string ToStringNoParen(DecompileContext context)
@@ -58,7 +58,7 @@ public static partial class Decompiler
                 arg2 = (Argument2 as ExpressionTwoSymbol).ToStringNoParen(context);
             else
                 arg2 = Argument2.ToString(context);
-            return String.Format("{0} {1} {2}", arg1, Symbol, arg2);
+            return string.Format("{0} {1} {2}", arg1, Symbol, arg2);
         }
 
         internal override AssetIDType DoTypePropagation(DecompileContext context, AssetIDType suggestedType)

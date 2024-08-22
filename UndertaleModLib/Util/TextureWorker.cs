@@ -202,7 +202,7 @@ public class TextureWorker
         }
     }
 
-    public static void SaveImageToFile(string FullPath, Image image, Boolean disposeImage = true)
+    public static void SaveImageToFile(string FullPath, Image image, bool disposeImage = true)
     {
         var stream = new FileStream(FullPath, FileMode.Create);
         image.Save(stream, ImageFormat.Png);

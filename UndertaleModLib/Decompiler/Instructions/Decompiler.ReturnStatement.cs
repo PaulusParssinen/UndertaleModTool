@@ -5,7 +5,7 @@ namespace UndertaleModLib.Decompiler;
 public static partial class Decompiler
 {
     // Represents a high-level return statement, or an exit in Studio version < 2 if there is no value.
-    public class ReturnStatement : Statement
+    public sealed class ReturnStatement : Statement
     {
         public Expression Value;
 

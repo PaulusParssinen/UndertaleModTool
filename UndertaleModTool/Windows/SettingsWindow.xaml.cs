@@ -210,7 +210,7 @@ public partial class SettingsWindow : Window
     public SettingsWindow()
     {
         InitializeComponent();
-        this.DataContext = this;
+        DataContext = this;
         Settings.Load();
     }
     private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

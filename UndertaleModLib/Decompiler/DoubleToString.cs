@@ -47,7 +47,7 @@ public static class DoubleToString
         
         // For anyone unaware of the general algorithm: you get the exponent 'n', then move the decimal point n times to the right if it's positive / left if it's negative.
         ReadOnlySpan<char> exponentAsSpan = numberAsSpan.Slice(indexOfE + 1);
-        int exponent = Int32.Parse(exponentAsSpan);
+        int exponent = int.Parse(exponentAsSpan);
 
         StringBuilder builder = new();
         int indexOfFirstDigitAfterDecimalPoint = number < 0 ? 3 : 2;
