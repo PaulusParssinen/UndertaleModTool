@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UndertaleModLib.Decompiler;
-using UndertaleModLib.Models;
+﻿using UndertaleModLib.Models;
 using static UndertaleModLib.Models.UndertaleInstruction;
 
 namespace UndertaleModLib.Compiler;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UndertaleModLib.Models;
+﻿namespace UndertaleModLib.Models;
 
 /// <summary>
 /// A string entry a data file can have.

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UndertaleModLib.Models;
+﻿using UndertaleModLib.Models;
 using UndertaleModLib.ModelsDebug;
 
 namespace UndertaleModLib;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UndertaleModLib;
+﻿namespace UndertaleModLib;
 
 [Serializable]
 internal class UndertaleSerializationException : Exception

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UndertaleModLib.Util;
+﻿namespace UndertaleModLib.Util;
 
 public class DebugUtil
 {

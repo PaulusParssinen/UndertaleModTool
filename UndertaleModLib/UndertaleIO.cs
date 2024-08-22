@@ -1,13 +1,6 @@
-﻿using System;
-using System.Buffers;
-using System.Collections.Generic;
+﻿using System.Buffers;
 using System.Diagnostics;
-using System.IO;
-using System.IO.Ports;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UndertaleModLib.Compiler;
 using UndertaleModLib.Models;
 using UndertaleModLib.Util;

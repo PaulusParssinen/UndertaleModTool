@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-namespace UndertaleModLib.Models;
+﻿namespace UndertaleModLib.Models;
 
 [PropertyChanged.AddINotifyPropertyChangedInterface]
 public class UndertaleSequence : IUndertaleNamedResource, IDisposable

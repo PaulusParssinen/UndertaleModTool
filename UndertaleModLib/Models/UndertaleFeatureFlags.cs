@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UndertaleModLib.Models;
+﻿namespace UndertaleModLib.Models;
 
 /// <summary>
 /// List of feature flag entries in a GameMaker data file, version 2022.8 and above.

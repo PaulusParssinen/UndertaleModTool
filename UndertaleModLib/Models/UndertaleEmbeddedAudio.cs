@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace UndertaleModLib.Models;
+﻿namespace UndertaleModLib.Models;
 
 /// <summary>
 /// An embedded audio entry in a data file.

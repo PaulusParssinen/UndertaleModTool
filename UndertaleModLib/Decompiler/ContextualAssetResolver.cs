@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using UndertaleModLib.Compiler;
 using UndertaleModLib.Models;
 
 namespace UndertaleModLib.Decompiler;

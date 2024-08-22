@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using log4net;
-using System.Diagnostics;
-using System.Globalization;
+﻿using log4net;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.CodeAnalysis;
 
 namespace UndertaleModTool;
 

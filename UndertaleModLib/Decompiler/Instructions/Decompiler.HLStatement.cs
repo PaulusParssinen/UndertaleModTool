@@ -1,5 +1,3 @@
-using System;
-
 namespace UndertaleModLib.Decompiler;
 
 public static partial class Decompiler

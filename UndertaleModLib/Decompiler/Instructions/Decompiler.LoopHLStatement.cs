@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using UndertaleModLib.Models;
 
 namespace UndertaleModLib.Decompiler;

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UndertaleModLib.Models;
 
 namespace UndertaleModLib.Decompiler;

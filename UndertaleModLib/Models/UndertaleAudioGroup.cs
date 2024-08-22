@@ -1,5 +1,3 @@
-using System;
-
 namespace UndertaleModLib.Models;
 
 /// <summary>

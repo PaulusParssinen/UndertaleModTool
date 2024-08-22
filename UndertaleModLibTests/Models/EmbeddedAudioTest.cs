@@ -1,7 +1,6 @@
 using UndertaleModLib;
 using UndertaleModLib.Models;
 using Xunit;
-using Xunit.Extensions;
 
 namespace UndertaleModLibTests.Models;
 

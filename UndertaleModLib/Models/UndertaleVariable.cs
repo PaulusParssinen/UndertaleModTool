@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UndertaleModLib.Models;
+﻿namespace UndertaleModLib.Models;
 
 /// <summary>
 /// A variable entry in a GameMaker data file.

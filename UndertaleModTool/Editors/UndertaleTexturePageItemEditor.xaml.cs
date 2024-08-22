@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Drawing;
 using System.Windows;
-using System.IO;
 using UndertaleModLib.Models;
 using UndertaleModLib.Util;
 using System.Windows.Controls;

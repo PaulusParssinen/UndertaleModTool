@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UndertaleModLib.Models;
-using static UndertaleModLib.Models.UndertaleGeneralInfo;
+﻿using static UndertaleModLib.Models.UndertaleGeneralInfo;
 
 
 // HUGE file containing definitions for most GameMaker builtin variables, functions, etc.

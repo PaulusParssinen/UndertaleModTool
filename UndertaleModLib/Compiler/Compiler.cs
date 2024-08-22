@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using UndertaleModLib.Models;
 using static UndertaleModLib.Compiler.Compiler.AssemblyWriter;
 using AssetRefType = UndertaleModLib.Decompiler.Decompiler.ExpressionAssetRef.RefType;

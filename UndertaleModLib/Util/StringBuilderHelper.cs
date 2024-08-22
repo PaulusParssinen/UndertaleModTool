@@ -1,5 +1,4 @@
 using System.Text;
-using UndertaleModLib.Compiler;
 
 namespace UndertaleModLib.Util;
 

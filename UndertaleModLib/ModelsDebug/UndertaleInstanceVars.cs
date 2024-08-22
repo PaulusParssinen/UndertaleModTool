@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UndertaleModLib.ModelsDebug;
+﻿namespace UndertaleModLib.ModelsDebug;
 
 public class UndertaleInstanceVars : IUndertaleResource
 {

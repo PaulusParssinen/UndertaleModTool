@@ -1,4 +1,3 @@
-using System;
 using UndertaleModLib.Models;
 
 namespace UndertaleModLib.Decompiler;

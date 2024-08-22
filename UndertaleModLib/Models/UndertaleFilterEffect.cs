@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UndertaleModLib.Models;
+﻿namespace UndertaleModLib.Models;
 
 /// <summary>
 /// A filter effect as it's used in a GameMaker data file. These are GameMaker: Studio 2.3.6+ only.
